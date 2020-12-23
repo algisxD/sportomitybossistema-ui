@@ -2,7 +2,12 @@
   <nav>
     <ul>
       <figure class="image-logo">
-        <img :src="imagePath" height="40px" width="40px" />
+        <img
+          :src="imagePath"
+          height="40px"
+          width="40px"
+          style="margin-top: 5px; margin-left: 5px;"
+        />
       </figure>
       <li
         v-for="(link, index) in navLinks"

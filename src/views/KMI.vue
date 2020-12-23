@@ -1,6 +1,6 @@
 <template>
   <div id="content">
-    <h2 class="page-title" style="margin-left: 2%">Pavadinimas</h2>
+    <h2 class="page-title text-blue-500" style="margin-left: 2%">Atlantis</h2>
 
     <div class="row">
       <div
