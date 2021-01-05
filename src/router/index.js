@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import KMI from "../views/KMI.vue";
 import Home from "../views/Home.vue";
 import Recipes from "../views/Recipes.vue";
+import Kcal from "../views/Kcal.vue";
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
     path: "/recipes",
     name: "Recipes",
     component: Recipes,
+  },
+  {
+    path: "/kcal",
+    name: "Kcal",
+    component: Kcal,
   },
 ];
 
