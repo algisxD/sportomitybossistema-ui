@@ -4,6 +4,7 @@ import KMI from "../views/KMI.vue";
 import Home from "../views/Home.vue";
 import Recipes from "../views/Recipes.vue";
 import Kcal from "../views/Kcal.vue";
+import Products from "../views/Products.vue";
 
 Vue.use(VueRouter);
 
@@ -22,6 +23,11 @@ const routes = [
     path: "/recipes",
     name: "Recipes",
     component: Recipes,
+  },
+  {
+    path: "/products",
+    name: "Products",
+    component: Products,
   },
   {
     path: "/kcal",

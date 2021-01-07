@@ -1,21 +1,6 @@
 <template>
   <div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Kalorijų skaicius</th>
-          <th scope="col">Angliavandieniu kiekis</th>
-          <th scope="col">Baltymu kiekis</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(product, index) in list" :key="index">
-          <td>{{ product.kcal }}</td>
-          <td>{{ product.angliavandeniai }}</td>
-          <td>{{ product.baltymai }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <PageTitle v-bind:title="title" />
   </div>
 </template>
 
@@ -23,12 +8,16 @@
 import Vue from "vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
+import PageTitle from "../components/PageTitle";
 
 Vue.use(VueAxios, axios);
 
 export default {
+  components: {
+    PageTitle,
+  },
   data() {
-    return { list: undefined };
+    return { list: undefined, title: "Kalorijų skaičiuoklė" };
   },
   mounted() {
     Vue.axios.get("https://localhost:44397/api/Produktas").then((response) => {

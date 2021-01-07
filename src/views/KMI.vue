@@ -1,6 +1,6 @@
 <template>
   <div id="content">
-    <h2 class="page-title text-blue-500" style="margin-left: 2%">Atlantis</h2>
+    <PageTitle v-bind:title="title" />
 
     <div class="row">
       <div
@@ -105,11 +105,14 @@ import { eventBus } from "../main.js";
 import infoKMI from "../components/calculatorKMI/InfoKMI";
 import errorListKMI from "../components/calculatorKMI/errorListKMI";
 import valueKMI from "../components/calculatorKMI/valueKMI";
+import PageTitle from "../components/PageTitle";
+
 export default {
   components: {
     infoKMI,
     valueKMI,
     errorListKMI,
+    PageTitle,
   },
   data() {
     return {
@@ -118,6 +121,7 @@ export default {
       height: this.height,
       weight: this.weight,
       BMI: 0,
+      title: "KMI skaičiuoklė",
     };
   },
   methods: {
