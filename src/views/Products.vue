@@ -22,8 +22,9 @@
               style="padding: 0px; border: 0px; width: 90px;"
               ><button
                 type="submit"
+                :disabled="!isComplete"
                 v-on:click="show()"
-                class="ion-ios-search"
+                class="ion-ios-search btn btn-primary"
                 style="height: 38px; width: 90px;"
               >
                 Ieškoti
@@ -32,11 +33,12 @@
           </div>
         </form>
       </div>
+      <productInformation />
     </div>
     <div
       v-if="pressedSearch"
       class="col-lg-5"
-      style="float: left; margin: 1%; margin-left: 3%"
+      style="float: left; margin: 1%; margin-left: 3%; padding-right: 0px; padding-left: 0px;"
     >
       <searchResults v-bind:filteredItems="filteredItems" />
     </div>
@@ -47,15 +49,18 @@
 import PageTitle from "../components/PageTitle";
 import Vue from "vue";
 import searchResults from "../components/ProductPage/searchResults";
+import productInformation from "../components/ProductPage/productInformation";
 
 export default {
   components: {
     PageTitle,
     searchResults,
+    productInformation,
   },
   data: () => ({
     title: "Produktų paieška",
     searchText: "",
+    searchTextLength: 0,
     products: undefined,
     pressedSearch: false,
   }),
@@ -68,17 +73,25 @@ export default {
   methods: {
     show() {
       this.pressedSearch = true;
+      this.searchTextLength = this.searchText.length;
     },
   },
   computed: {
     filteredItems() {
-      return this.products.filter((product) => {
-        return (
-          product.pavadinimas
-            .toLowerCase()
-            .indexOf(this.searchText.toLowerCase()) > -1
-        );
-      });
+      if (this.searchTextLength != this.searchText.length) {
+        return "";
+      } else {
+        return this.products.filter((product) => {
+          return (
+            product.pavadinimas
+              .toLowerCase()
+              .indexOf(this.searchText.toLowerCase()) > -1
+          );
+        });
+      }
+    },
+    isComplete() {
+      return this.searchText;
     },
   },
 };
