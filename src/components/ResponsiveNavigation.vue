@@ -82,27 +82,4 @@ i {
   margin-right: 10px;
   font-size: 22px;
 }
-
-/* @media screen and (max-width: 759px) {
-  nav {
-    
-  }
-  ul {
-    position: absolute;
-    width: 300px;
-    flex-direction: column;
-  }
-  li {
-    width: 100%;
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  a {
-    flex-direction: row;
-    margin-left: 20px;
-    justify-content: space-between;
-    margin-right: 13px;
-  }
-} */
 </style>

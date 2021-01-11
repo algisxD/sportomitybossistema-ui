@@ -4,10 +4,10 @@
 
     <div class="row">
       <div
-        class="col-lg-5 border-2 border-opacity-100 border-black"
+        class="col-lg-5 cardBackground zoom"
         style="float: left; margin: 1%; margin-left: 3%"
       >
-        <h1 class="text-blue-500" style="font-size: 20px">KMI skaičiuoklė</h1>
+        <h3>KMI skaičiuoklė</h3>
         <form @submit="checkForm">
           <div class="row" v-if="!isCalculated" style="height: 400px">
             <div class="col">
@@ -87,13 +87,8 @@
         <br />
       </div>
 
-      <div
-        class="col-lg-5 border-2 border-opacity-100 border-black"
-        style="float: left; margin: 1%"
-      >
-        <div>
-          <infoKMI />
-        </div>
+      <div class="col-lg-5 cardBackground zoom" style="float: left; margin: 1%">
+        <infoKMI />
       </div>
     </div>
     <br /><br />
@@ -193,5 +188,18 @@ form {
   outline-color: #333;
   margin-left: 0;
   padding: 0;
+}
+.cardBackground {
+  background-color: #508991;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+}
+.zoom {
+  transition: transform 0.2s; /* Animation */
+  margin: 0 auto;
+}
+.zoom:hover {
+  -ms-transform: scale(1.05); /* IE 9 */
+  -webkit-transform: scale(1.05); /* Safari 3-8 */
+  transform: scale(1.05);
 }
 </style>

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1 class="text-blue-500">Kūno Masės Indekso (KMI) skaičiavimas:</h1>
+    <h3>
+      Kūno Masės Indekso (KMI) skaičiavimas:
+    </h3>
     <br />
     <p>
       <span class="font-bold">KMI</span> - tai orientacinis rodiklis, parodantis
@@ -26,10 +28,4 @@
 export default {};
 </script>
 
-<style scoped>
-h1:after {
-  content: " ";
-  display: block;
-  border: 1px solid black;
-}
-</style>
+<style scoped></style>
