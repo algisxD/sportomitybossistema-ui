@@ -65,7 +65,7 @@ export default {
       },
       {
         text: "Prisijungti",
-        path: "/kmi",
+        path: "/login",
         icon: "ion-ios-log-in",
       },
     ],
