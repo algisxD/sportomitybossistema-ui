@@ -11,3 +11,7 @@ p,
 a {
   font-family: "Lato", sans-serif;
 }
+
+.cardBackground {
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+}

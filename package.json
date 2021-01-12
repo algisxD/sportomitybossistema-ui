@@ -15,7 +15,9 @@
     "sass": "^1.30.0",
     "vue": "^2.6.12",
     "vue-axios": "^3.2.1",
-    "vue-router": "^3.2.0"
+    "vue-material": "^1.0.0-beta-15",
+    "vue-router": "^3.2.0",
+    "vuelidate": "^0.7.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss7-compat": "^2.0.2",

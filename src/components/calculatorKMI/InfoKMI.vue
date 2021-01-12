@@ -1,9 +1,8 @@
 <template>
   <div>
-    <h3>
+    <h3 style="margin-bottom: 20px;">
       Kūno Masės Indekso (KMI) skaičiavimas:
     </h3>
-    <br />
     <p>
       <span class="font-bold">KMI</span> - tai orientacinis rodiklis, parodantis
       ar žmogaus masė yra normali, ar yra antsvoris arba svorio trūkumas. KMI
