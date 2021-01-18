@@ -1,9 +1,7 @@
 <template>
-  <span>
-    <button v-on:click="goBack" class="btn btn-secondary float-right">
-      Atgal
-    </button>
-  </span>
+  <button v-on:click="goBack" class="btn btn-secondary float-right">
+    Atgal
+  </button>
 </template>
 
 <script>
@@ -17,3 +15,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+button {
+  margin-top: 80px;
+}
+</style>

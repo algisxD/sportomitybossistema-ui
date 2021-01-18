@@ -24,20 +24,13 @@
           <i :class="link.icon" />
         </router-link>
       </li>
-      <li>
-        <Dropdown v-bind:sportOptions="sportOptions" />
-      </li>
     </ul>
   </nav>
 </template>
 
 <script>
-import Dropdown from "@/components/Dropdown";
-
 export default {
-  components: {
-    Dropdown,
-  },
+  components: {},
   props: [
     "navLinks",
     "background",

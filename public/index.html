@@ -16,13 +16,6 @@
     />
   </head>
   <body>
-    <noscript>
-      <strong
-        >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
-        properly without JavaScript enabled. Please enable it to
-        continue.</strong
-      >
-    </noscript>
     <div id="app"></div>
 
     <!-- built files will be auto injected -->
@@ -32,10 +25,86 @@
   html,
   body {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     margin: 0px;
     padding: 0px;
     overflow-x: hidden;
     background: #74b3ce;
+  }
+  .animation-area {
+    width: 100%;
+    height: 100%;
+  }
+  .box-area {
+    position: absolute;
+    top: 10%;
+    left: 0;
+    width: 100%;
+    height: 74%;
+    margin: 0;
+  }
+  .box-area li {
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 25px;
+    height: 25px;
+    background: rgba(255, 255, 255, 0.2);
+    animation: animate 20s linear infinite;
+    bottom: -150px;
+  }
+  .box-area li:nth-child(1) {
+    left: 86%;
+    width: 80px;
+    height: 80px;
+    animation-delay: 0s;
+  }
+  .box-area li:nth-child(2) {
+    left: 12%;
+    width: 30px;
+    height: 30px;
+    animation-delay: 1.5s;
+    animation-duration: 10s;
+  }
+  .box-area li:nth-child(3) {
+    left: 70%;
+    width: 100px;
+    height: 100px;
+    animation-delay: 5.5s;
+  }
+  .box-area li:nth-child(4) {
+    left: 42%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 0s;
+    animation-duration: 15s;
+  }
+  .box-area li:nth-child(5) {
+    left: 60%;
+    width: 40px;
+    height: 40px;
+    animation-delay: 0s;
+  }
+  .box-area li:nth-child(6) {
+    left: 15%;
+    width: 110px;
+    height: 110px;
+    animation-delay: 3.5s;
+  }
+  .box-area li:nth-child(7) {
+    left: 33%;
+    width: 90px;
+    height: 90px;
+    animation-delay: 5.5s;
+  }
+  @keyframes animate {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-800px) rotate(360deg);
+      opacity: 0;
+    }
   }
 </style>

@@ -9,6 +9,7 @@ import "./assets/global.css";
 import vueMaterial from "vue-material";
 import "vue-material/dist/vue-material.min.css";
 import "vue-material/dist/theme/default.css";
+import "animate.css";
 
 export const eventBus = new Vue();
 
