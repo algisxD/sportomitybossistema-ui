@@ -12,7 +12,9 @@
           <div class="row" v-if="!isCalculated" style="height: 400px">
             <div class="col">
               <fieldset>
-                <legend>Įveskite savo duomenis:</legend>
+                <legend style="margin-bottom: 30px;">
+                  Įveskite savo duomenis:
+                </legend>
                 <div class="form-group">
                   <div>
                     <label>Lytis:</label>

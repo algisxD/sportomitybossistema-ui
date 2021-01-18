@@ -1,10 +1,6 @@
 <template>
-  <div class="center">
-    <form
-      novalidate
-      class="md-layout cardBackground"
-      @submit.prevent="validateUser"
-    >
+  <div class="centered-container">
+    <form class="form" novalidate @submit.prevent="validateUser">
       <md-card class="md-layout-item md-size-100 md-small-size-100">
         <md-card-header>
           <div class="md-title">Registracija</div>
@@ -219,6 +215,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.centered-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 80vh;
+}
+.title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.actions {
+  .md-button {
+    margin: 0;
+  }
+}
+.form {
+  margin-bottom: 60px;
+  width: 800px;
+}
 .md-progress-bar {
   position: absolute;
   top: 0;
@@ -227,10 +243,30 @@ export default {
 }
 .center {
   position: absolute;
-  width: 50%;
-  height: 60%;
+  width: 20%;
+  height: 100%;
   top: 40%;
-  left: 30%;
+  left: 50%;
   margin: -150px 0 0 -150px;
+}
+.md-content {
+  z-index: 1;
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+}
+.loading-overlay {
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
