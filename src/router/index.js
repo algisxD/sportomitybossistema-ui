@@ -5,7 +5,7 @@ import Home from "../views/Home.vue";
 import Recipes from "../views/Recipes.vue";
 import Kcal from "../views/Kcal.vue";
 import Products from "../views/Products.vue";
-import Login from "../views/Login.vue";
+import Register from "../views/Register.vue";
 
 Vue.use(VueRouter);
 
@@ -36,9 +36,9 @@ const routes = [
     component: Kcal,
   },
   {
-    path: "/login",
-    name: "Login",
-    component: Login,
+    path: "/register",
+    name: "Register",
+    component: Register,
   },
 ];
 
