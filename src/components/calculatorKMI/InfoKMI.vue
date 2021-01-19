@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 style="margin-bottom: 20px;">
+    <h3>
       Kūno Masės Indekso (KMI) skaičiavimas:
     </h3>
     <p>

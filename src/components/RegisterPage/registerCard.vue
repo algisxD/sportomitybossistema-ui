@@ -241,14 +241,7 @@ export default {
   right: 0;
   left: 0;
 }
-.center {
-  position: absolute;
-  width: 20%;
-  height: 100%;
-  top: 40%;
-  left: 50%;
-  margin: -150px 0 0 -150px;
-}
+
 .md-content {
   z-index: 1;
   padding: 40px;

@@ -3,7 +3,8 @@
     <div
       v-for="(product, index) in filteredItems"
       :key="index"
-      class="text-green-200 border-b search-results"
+      class="border-b search-results resultHover"
+      v-on:click="displaySelectedItem(product)"
     >
       {{ product.pavadinimas }}
     </div>
@@ -11,9 +12,15 @@
 </template>
 
 <script>
+import { eventBus } from "../../main.js";
+
 export default {
   props: ["filteredItems"],
-  methods: {},
+  methods: {
+    displaySelectedItem(item) {
+      eventBus.$emit("displaySelected", item);
+    },
+  },
 };
 </script>
 
@@ -22,5 +29,12 @@ export default {
   font-size: 20px;
   margin-bottom: 20px;
   width: 600px;
+}
+.border-b {
+  padding-bottom: 20px;
+}
+.resultHover:hover {
+  text-decoration-line: underline;
+  cursor: pointer;
 }
 </style>

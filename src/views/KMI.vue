@@ -7,7 +7,7 @@
         class="col-lg-5 cardBackground zoom"
         style="float: left; margin: 1%; margin-left: 3%"
       >
-        <h3 style="margin-bottom: 20px;">KMI skaičiuoklė</h3>
+        <h3>KMI skaičiuoklė</h3>
         <form @submit="checkForm">
           <div class="row" v-if="!isCalculated" style="height: 400px">
             <div class="col">
@@ -190,10 +190,6 @@ form {
   outline-color: #333;
   margin-left: 0;
   padding: 0;
-}
-.cardBackground {
-  background-color: #508991;
-  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
 }
 .zoom {
   transition: transform 0.2s; /* Animation */
