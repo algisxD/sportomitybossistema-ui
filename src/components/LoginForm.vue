@@ -1,37 +1,68 @@
 <template>
   <div class="centered-container">
-    <md-content class="md-elevation-3">
-      <div class="title">
-        <div class="md-title">Prisijungimas</div>
-      </div>
+    <form class="form" novalidate @submit.prevent="validateUser">
+      <md-card class="md-layout-item md-size-100 md-small-size-100">
+        <md-card-header>
+          <div class="md-title">Prisijungimas</div>
+        </md-card-header>
 
-      <div class="form">
-        <md-field>
-          <label>El-paštas</label>
-          <md-input v-model="login.email" autofocus></md-input>
-        </md-field>
+        <md-card-content>
+          <md-field :class="getValidationClass('email')">
+            <label for="email">El. paštas</label>
+            <md-input
+              type="email"
+              name="email"
+              id="email"
+              autocomplete="email"
+              v-model="form.email"
+              :disabled="sending"
+            />
+            <span class="md-error" v-if="!$v.form.email.required"
+              >El. paštas yra privalomas</span
+            >
+            <span class="md-error" v-else-if="!$v.form.email.email"
+              >Netinkamas el. paštas</span
+            >
+          </md-field>
 
-        <md-field md-has-password>
-          <label>Slaptažodis</label>
-          <md-input v-model="login.password" type="password"></md-input>
-        </md-field>
-      </div>
+          <md-field :class="getValidationClass('password')">
+            <label for="password">Slaptažodis</label>
+            <md-input
+              type="password"
+              name="password"
+              id="password"
+              autocomplete="password"
+              v-model="form.password"
+              :disabled="sending"
+            />
+            <span class="md-error" v-if="!$v.form.password.required"
+              >Slaptažodis yra privalomas</span
+            >
+            <span class="md-error" v-else-if="!$v.form.password.minLength"
+              >Netinkamas slaptažodis</span
+            >
+          </md-field>
+        </md-card-content>
 
-      <div class="actions md-layout md-alignment-center-space-between">
-        <a href="/#/register">Registracija</a>
-        <md-button class="md-raised md-primary" @click="auth"
-          >Prisijungti</md-button
-        >
-      </div>
+        <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
-      <div class="loading-overlay" v-if="loading">
-        <md-progress-spinner
-          md-mode="indeterminate"
-          :md-stroke="2"
-        ></md-progress-spinner>
-      </div>
-    </md-content>
-    <div class="background" />
+        <md-card-actions>
+          <div class="actions md-layout md-alignment-center-space-between">
+            <a href="/#/register" style="margin-right: 250px;">Registracija</a>
+          </div>
+          <md-button
+            type="submit"
+            class="md-primary md-raised"
+            :disabled="sending"
+            >Prisijungti</md-button
+          >
+        </md-card-actions>
+      </md-card>
+
+      <md-snackbar :md-active.sync="userSaved"
+        >Vartotojas {{ lastUser }} užregistruotas sėkmingai!</md-snackbar
+      >
+    </form>
   </div>
 </template>
 
@@ -40,29 +71,54 @@ import { validationMixin } from "vuelidate";
 import {
   required,
   email,
-  minLength,
+  between,
   maxLength,
+  minLength,
 } from "vuelidate/lib/validators";
 
 export default {
   name: "FormValidation",
   mixins: [validationMixin],
   data: () => ({
-    login: {
-      email: "",
+    form: {
+      gender: null,
+      age: null,
+      email: null,
+      height: null,
+      weight: null,
       password: "",
     },
+    userSaved: false,
+    sending: false,
+    lastUser: null,
   }),
   validations: {
-    login: {
+    form: {
+      age: {
+        required,
+        maxLength: maxLength(3),
+        between: between(0, 130),
+      },
+      gender: {
+        required,
+      },
       email: {
         required,
         email,
       },
+      height: {
+        required,
+        maxLength: maxLength(3),
+        between: between(0, 250),
+      },
+      weight: {
+        required,
+        maxLength: maxLength(3),
+        between: between(0, 300),
+      },
       password: {
         required,
-        mixLength: minLength(8),
-        maxLength: maxLength(50),
+        minLength: minLength(8),
       },
     },
   },
@@ -78,8 +134,13 @@ export default {
     },
     clearForm() {
       this.$v.$reset();
-      this.form.email = "";
-      this.form.password = "";
+      this.form.firstName = null;
+      this.form.lastName = null;
+      this.form.age = null;
+      this.form.gender = null;
+      this.form.email = null;
+      this.form.height = null;
+      this.form.weight = null;
     },
     saveUser() {
       this.sending = true;
@@ -122,6 +183,7 @@ export default {
 }
 .form {
   margin-bottom: 60px;
+  width: 450px;
 }
 .md-progress-bar {
   position: absolute;
@@ -129,14 +191,7 @@ export default {
   right: 0;
   left: 0;
 }
-.center {
-  position: absolute;
-  width: 20%;
-  height: 100%;
-  top: 40%;
-  left: 50%;
-  margin: -150px 0 0 -150px;
-}
+
 .md-content {
   z-index: 1;
   padding: 40px;
