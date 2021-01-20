@@ -23,22 +23,8 @@
 </template>
 
 <script>
-import { eventBus } from "../../main.js";
-
 export default {
-  data() {
-    return {
-      item: [],
-    };
-  },
-  props: {
-    //tableValues,
-  },
-  created() {
-    eventBus.$on("displaySelected", (data) => {
-      this.item = data;
-    });
-  },
+  props: ["item"],
 };
 </script>
 
@@ -48,5 +34,6 @@ export default {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 100px;
 }
 </style>

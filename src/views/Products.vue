@@ -3,11 +3,14 @@
     <PageTitle v-bind:title="title" />
 
     <div class="row">
-      <div class="col-lg-5" style="float: left; margin: 1%; margin-left: 3%">
+      <div
+        class="col-lg-4"
+        style="float: left; margin: 1%; margin-left: 3%; margin-right: 0; padding: 0px;"
+      >
         <h1 style="font-size: 20px; margin-bottom: 20px;">
           Įveskite produkto/recepto pavadinimą:
         </h1>
-        <form style="width: 70%;">
+        <form style="width: 70%; margin-bottom: 50px;">
           <div class="input-group mb-3">
             <div class="input-group-prepend"></div>
             <input
@@ -21,7 +24,7 @@
               class="input-group-text"
               style="padding: 0px; border: 0px; width: 90px;"
               ><button
-                type="submit"
+                type="button"
                 :disabled="!isComplete"
                 v-on:click="show()"
                 class="ion-ios-search btn btn-primary"
@@ -32,15 +35,16 @@
             >
           </div>
         </form>
+        <div v-if="pressedSearch" class="col-lg-5 searchDiv">
+          <searchResults v-bind:filteredItems="filteredItems" />
+        </div>
       </div>
-      <productInformation />
-    </div>
-    <div
-      v-if="pressedSearch"
-      class="col-lg-5"
-      style="float: left; margin: 1%; margin-left: 3%; padding-right: 0px; padding-left: 0px;"
-    >
-      <searchResults v-bind:filteredItems="filteredItems" />
+      <transition
+        mode="in"
+        enter-active-class="animate__animated animate__fadeInDown"
+      >
+        <productInformation
+      /></transition>
     </div>
   </div>
 </template>
@@ -97,4 +101,13 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.searchDiv {
+  float: left;
+  margin: 1%;
+  margin-left: 3%;
+  padding-right: 0px;
+  padding-left: 0px;
+  margin: 0;
+}
+</style>

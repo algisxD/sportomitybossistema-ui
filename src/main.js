@@ -10,6 +10,7 @@ import vueMaterial from "vue-material";
 import "vue-material/dist/vue-material.min.css";
 import "vue-material/dist/theme/default.css";
 import "animate.css";
+import VueApexCharts from "vue-apexcharts";
 
 export const eventBus = new Vue();
 
@@ -17,6 +18,8 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(vueMaterial);
+Vue.use(VueApexCharts);
+Vue.component("apexchart", VueApexCharts);
 
 new Vue({
   router,

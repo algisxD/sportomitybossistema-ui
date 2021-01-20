@@ -4,7 +4,10 @@
       v-for="(product, index) in filteredItems"
       :key="index"
       class="border-b search-results resultHover"
-      v-on:click="displaySelectedItem(product)"
+      v-on:click="
+        displaySelectedItem(product);
+        updateChart(product);
+      "
     >
       {{ product.pavadinimas }}
     </div>
@@ -19,6 +22,9 @@ export default {
   methods: {
     displaySelectedItem(item) {
       eventBus.$emit("displaySelected", item);
+    },
+    updateChart(item) {
+      eventBus.$emit("updateChart", item);
     },
   },
 };
