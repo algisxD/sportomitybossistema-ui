@@ -31,6 +31,7 @@ export default {
   components: {
     ResponsiveNavigation,
   },
+  methods: {},
   data: () => ({
     navLinks: [
       {

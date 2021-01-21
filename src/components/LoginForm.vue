@@ -1,6 +1,6 @@
 <template>
   <div class="centered-container">
-    <form class="form" novalidate @submit.prevent="validateUser">
+    <form class="form" novalidate @submit.prevent="login">
       <md-card class="md-layout-item md-size-100 md-small-size-100">
         <md-card-header>
           <div class="md-title">Prisijungimas</div>
@@ -58,63 +58,31 @@
           >
         </md-card-actions>
       </md-card>
-
-      <md-snackbar :md-active.sync="userSaved"
-        >Vartotojas {{ lastUser }} užregistruotas sėkmingai!</md-snackbar
-      >
     </form>
   </div>
 </template>
 
 <script>
 import { validationMixin } from "vuelidate";
-import {
-  required,
-  email,
-  between,
-  maxLength,
-  minLength,
-} from "vuelidate/lib/validators";
+import { required, email, minLength } from "vuelidate/lib/validators";
+import Vue from "vue";
+//import { swal } from "vue/types/umd";
 
 export default {
   name: "FormValidation",
   mixins: [validationMixin],
   data: () => ({
     form: {
-      gender: null,
-      age: null,
       email: null,
-      height: null,
-      weight: null,
       password: "",
     },
-    userSaved: false,
     sending: false,
-    lastUser: null,
   }),
   validations: {
     form: {
-      age: {
-        required,
-        maxLength: maxLength(3),
-        between: between(0, 130),
-      },
-      gender: {
-        required,
-      },
       email: {
         required,
         email,
-      },
-      height: {
-        required,
-        maxLength: maxLength(3),
-        between: between(0, 250),
-      },
-      weight: {
-        required,
-        maxLength: maxLength(3),
-        between: between(0, 300),
       },
       password: {
         required,
@@ -134,31 +102,35 @@ export default {
     },
     clearForm() {
       this.$v.$reset();
-      this.form.firstName = null;
-      this.form.lastName = null;
-      this.form.age = null;
-      this.form.gender = null;
       this.form.email = null;
-      this.form.height = null;
-      this.form.weight = null;
+      this.form.password = null;
     },
-    saveUser() {
+    login() {
       this.sending = true;
 
-      // Instead of this timeout, here you can call your API
-      window.setTimeout(() => {
-        this.lastUser = `${this.form.email}`;
-        this.userSaved = true;
-        this.sending = false;
-        this.clearForm();
-      }, 1500);
-    },
-    validateUser() {
-      this.$v.$touch();
+      Vue.axios
+        .post("https://localhost:44397/api/users/login", this.form)
+        .then((response) => {
+          const token = response.data.token;
+          localStorage.setItem("access_token", token);
+          this.$router.push({ name: "Home" });
+        })
+        .catch((error) => {
+          if (error.response.status === 401) {
+            Vue.swal("Klaida", "Netinkami prisijungimo duomenys.", "error", {
+              button: "asdasd",
+            });
+          } else {
+            Vue.swal(
+              "Klaida",
+              "Vidinė serverio klaida, susisiekite su administracija",
+              "error"
+            );
+          }
+        });
 
-      if (!this.$v.$invalid) {
-        this.saveUser();
-      }
+      this.sending = false;
+      this.clearForm();
     },
   },
 };
