@@ -9,28 +9,81 @@
           style="margin-top: 5px; margin-left: 5px;"
         />
       </figure>
-      <li
-        v-for="(link, index) in navLinks"
-        :key="index"
-        @mouseenter="
-          $event.currentTarget.style.background = hoverBackground || '#999'
-        "
-        @mouseleave="
-          $event.currentTarget.style.background = background || '#333'
-        "
-      >
-        <router-link :to="link.path" :style="{ color: linkColor || '#DDD' }">
-          {{ link.text }}
-          <i :class="link.icon" />
-        </router-link>
-      </li>
+      <template>
+        <li
+          v-for="(link, index) in navLinks"
+          :key="index"
+          @mouseenter="
+            $event.currentTarget.style.background = hoverBackground || '#999'
+          "
+          @mouseleave="
+            $event.currentTarget.style.background = background || '#333'
+          "
+        >
+          <router-link :to="link.path" :style="{ color: linkColor || '#DDD' }">
+            {{ link.text }}
+            <i :class="link.icon" />
+          </router-link>
+        </li>
+        <li
+          style="float: right;"
+          v-if="!authenticated"
+          @mouseenter="
+            $event.currentTarget.style.background = hoverBackground || '#999'
+          "
+          @mouseleave="
+            $event.currentTarget.style.background = background || '#333'
+          "
+        >
+          <router-link :to="'/login'" :style="{ color: linkColor || '#DDD' }">
+            Prisijungti
+            <i :class="'ion-ios-log-in'" />
+          </router-link>
+        </li>
+        <li
+          style="float: right;"
+          v-if="authenticated"
+          @mouseenter="
+            $event.currentTarget.style.background = hoverBackground || '#999'
+          "
+          @mouseleave="
+            $event.currentTarget.style.background = background || '#333'
+          "
+        >
+          <a :to="'/'" :style="{ color: linkColor || '#DDD' }">
+            {{ user }}
+            <i :class="'ion-ios-person'" />
+          </a>
+        </li>
+        <li
+          id="SignInOff"
+          v-if="authenticated"
+          @mouseenter="
+            $event.currentTarget.style.background = hoverBackground || '#999'
+          "
+          @mouseleave="
+            $event.currentTarget.style.background = background || '#333'
+          "
+        >
+          <router-link :to="'/'" :style="{ color: linkColor || '#DDD' }">
+            Atsijungti
+            <i :class="'ion-ios-log-out'" />
+          </router-link></li
+      ></template>
     </ul>
   </nav>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   components: {},
+  data: () => {
+    return {
+      afterSignIn: ["Atsijungti"],
+    };
+  },
   props: [
     "navLinks",
     "background",
@@ -39,6 +92,17 @@ export default {
     "imagePath",
     "sportOptions",
   ],
+  methods: {
+    showAfterSignIn(text) {
+      if (this.afterSignIn(text)) return true;
+    },
+  },
+  computed: {
+    ...mapGetters({
+      authenticated: "auth/authenticated",
+      user: "auth/user",
+    }),
+  },
 };
 </script>
 
@@ -74,5 +138,8 @@ figure {
 i {
   margin-right: 10px;
   font-size: 22px;
+}
+#SignInOff {
+  float: right;
 }
 </style>

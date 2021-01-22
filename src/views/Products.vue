@@ -54,6 +54,7 @@ import PageTitle from "../components/PageTitle";
 import Vue from "vue";
 import searchResults from "../components/ProductPage/searchResults";
 import productInformation from "../components/ProductPage/productInformation";
+//import { mapGetters } from 'vuex';
 
 export default {
   components: {

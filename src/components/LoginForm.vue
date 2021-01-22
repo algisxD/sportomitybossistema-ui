@@ -65,7 +65,8 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, email, minLength } from "vuelidate/lib/validators";
-import Vue from "vue";
+//import Vue from "vue";
+import { mapActions } from "vuex";
 //import { swal } from "vue/types/umd";
 
 export default {
@@ -105,12 +106,18 @@ export default {
       this.form.email = null;
       this.form.password = null;
     },
+    ...mapActions({
+      signIn: "auth/signIn",
+    }),
     login() {
       this.sending = true;
+      this.signIn(this.form).then(() => {
+        this.$router.replace({
+          name: "Home",
+        });
+      });
 
-      Vue.axios
-        .post("https://localhost:44397/api/users/login", this.form)
-        .then((response) => {
+      /* .then((response) => {
           const token = response.data.token;
           localStorage.setItem("access_token", token);
           this.$router.push({ name: "Home" });
@@ -127,7 +134,7 @@ export default {
               "error"
             );
           }
-        });
+        }); */
 
       this.sending = false;
       this.clearForm();

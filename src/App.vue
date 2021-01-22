@@ -69,11 +69,6 @@ export default {
         path: "/sport",
         icon: "ion-ios-american-football",
       },
-      {
-        text: "Prisijungti",
-        path: "/login",
-        icon: "ion-ios-log-in",
-      },
     ],
   }),
 };
