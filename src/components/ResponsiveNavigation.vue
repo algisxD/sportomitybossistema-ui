@@ -51,12 +51,13 @@
           "
         >
           <a :to="'/'" :style="{ color: linkColor || '#DDD' }">
-            {{ user }}
+            {{ user.email }}
             <i :class="'ion-ios-person'" />
           </a>
         </li>
         <li
           id="SignInOff"
+          @click.prevent="signOut"
           v-if="authenticated"
           @mouseenter="
             $event.currentTarget.style.background = hoverBackground || '#999'
@@ -75,7 +76,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {},
@@ -95,6 +96,16 @@ export default {
   methods: {
     showAfterSignIn(text) {
       if (this.afterSignIn(text)) return true;
+    },
+    ...mapActions({
+      signOutAction: "auth/signOut",
+    }),
+    signOut() {
+      this.signOutAction().then(() => {
+        this.$router.replace({
+          name: "Home",
+        });
+      });
     },
   },
   computed: {

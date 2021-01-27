@@ -31,12 +31,31 @@ export default {
     async signIn({ dispatch }, credentials) {
       let response = await axios.post("users/login", credentials);
 
-      return dispatch("attempt", response.data);
+      return dispatch("attempt", response.data.token);
     },
 
-    async attempt({ commit }, data) {
-      commit("SET_TOKEN", data.token);
-      commit("SET_USER", data.email);
+    async attempt({ commit, state }, token) {
+      if (token) {
+        commit("SET_TOKEN", token);
+      }
+
+      if (!state.token) {
+        return;
+      }
+
+      try {
+        let response = await axios.get("users");
+
+        commit("SET_USER", response.data);
+      } catch (e) {
+        commit("SET_TOKEN", null);
+        commit("SET_USER", null);
+      }
+    },
+
+    signOut({ commit }) {
+      commit("SET_TOKEN", null);
+      commit("SET_USER", null);
     },
   },
 };

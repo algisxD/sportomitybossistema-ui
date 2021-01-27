@@ -1,6 +1,6 @@
 <template>
   <div class="centered-container">
-    <form class="form" novalidate @submit.prevent="login">
+    <form class="form" novalidate @submit.prevent="validateUser">
       <md-card class="md-layout-item md-size-100 md-small-size-100">
         <md-card-header>
           <div class="md-title">Prisijungimas</div>
@@ -65,7 +65,7 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, email, minLength } from "vuelidate/lib/validators";
-//import Vue from "vue";
+import Vue from "vue";
 import { mapActions } from "vuex";
 //import { swal } from "vue/types/umd";
 
@@ -111,33 +111,32 @@ export default {
     }),
     login() {
       this.sending = true;
-      this.signIn(this.form).then(() => {
-        this.$router.replace({
-          name: "Home",
-        });
-      });
-
-      /* .then((response) => {
-          const token = response.data.token;
-          localStorage.setItem("access_token", token);
-          this.$router.push({ name: "Home" });
+      this.signIn(this.form)
+        .then(() => {
+          this.$router.replace({
+            name: "Home",
+          });
         })
         .catch((error) => {
           if (error.response.status === 401) {
-            Vue.swal("Klaida", "Netinkami prisijungimo duomenys.", "error", {
-              button: "asdasd",
-            });
+            Vue.swal("Klaida", "Netinkami prisijungimo duomenys", "error");
           } else {
             Vue.swal(
               "Klaida",
-              "Vidinė serverio klaida, susisiekite su administracija",
+              "Serverio klaida, susisiekite su administracija",
               "error"
             );
           }
-        }); */
-
+        });
       this.sending = false;
       this.clearForm();
+    },
+    validateUser() {
+      this.$v.$touch();
+
+      if (!this.$v.$invalid) {
+        this.login();
+      }
     },
   },
 };

@@ -14,6 +14,8 @@ import VueSweetalert2 from "vue-sweetalert2";
 import store from "./store";
 import axios from "axios";
 
+require("./store/subscriber");
+
 export const eventBus = new Vue();
 axios.defaults.baseURL = "https://localhost:44397/api/";
 
@@ -25,8 +27,10 @@ Vue.use(VueApexCharts);
 Vue.component("apexchart", VueApexCharts);
 Vue.use(VueSweetalert2);
 
-new Vue({
-  router,
-  store,
-  render: (h) => h(App),
-}).$mount("#app");
+store.dispatch("auth/attempt", localStorage.getItem("token")).then(() => {
+  new Vue({
+    router,
+    store,
+    render: (h) => h(App),
+  }).$mount("#app");
+});
