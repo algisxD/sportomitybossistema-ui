@@ -26,7 +26,6 @@
           </router-link>
         </li>
         <li
-          style="float: right;"
           v-if="!authenticated"
           @mouseenter="
             $event.currentTarget.style.background = hoverBackground || '#999'
@@ -41,7 +40,6 @@
           </router-link>
         </li>
         <li
-          style="float: right;"
           v-if="authenticated"
           @mouseenter="
             $event.currentTarget.style.background = hoverBackground || '#999'
@@ -56,7 +54,6 @@
           </a>
         </li>
         <li
-          id="SignInOff"
           @click.prevent="signOut"
           v-if="authenticated"
           @mouseenter="

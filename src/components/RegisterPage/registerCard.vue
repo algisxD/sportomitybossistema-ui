@@ -4,6 +4,15 @@
       <md-card class="md-layout-item md-size-100 md-small-size-100">
         <md-card-header>
           <div class="md-title">Registracija</div>
+          <div style="margin-top: 20px;">
+            Slaptažodis privalo turėti bent vieną:
+            <ul>
+              <li>Didžiają raidę</li>
+              <li>Mažają raidę</li>
+              <li>Skaičių</li>
+              <li>Specialų simbolį</li>
+            </ul>
+          </div>
         </md-card-header>
 
         <md-card-content>
@@ -25,92 +34,56 @@
             >
           </md-field>
 
-          <div class="md-layout md-gutter">
-            <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('gender')">
-                <label for="gender">Lytis</label>
-                <md-select
-                  name="gender"
-                  id="gender"
-                  v-model="form.gender"
-                  md-dense
-                  :disabled="sending"
-                >
-                  <md-option></md-option>
-                  <md-option value="M">Vyras</md-option>
-                  <md-option value="F">Moteris</md-option>
-                </md-select>
-                <span class="md-error">Lytis yra privaloma</span>
-              </md-field>
-            </div>
+          <md-field :class="getValidationClass('password')">
+            <label for="password">Slaptažodis</label>
+            <md-input
+              type="password"
+              name="password"
+              id="password"
+              autocomplete="password"
+              v-model="form.password"
+              :disabled="sending"
+            />
+            <span class="md-error" v-if="!$v.form.password.required"
+              >Slaptažodis yra privalomas</span
+            >
+            <span class="md-error" v-else-if="!$v.form.password.minLength"
+              >Netinkamas slaptažodis</span
+            >
+          </md-field>
 
-            <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('age')">
-                <label for="age">Amžius</label>
-                <md-input
-                  type="number"
-                  id="age"
-                  name="age"
-                  autocomplete="age"
-                  v-model="form.age"
-                  :disabled="sending"
-                />
-                <span class="md-error" v-if="!$v.form.age.required"
-                  >Amžius yra privalomas</span
-                >
-                <span class="md-error" v-else-if="!$v.form.age.maxlength"
-                  >Netinkamas amžius</span
-                >
-              </md-field>
-            </div>
-          </div>
-
-          <div class="md-layout md-gutter">
-            <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('height')">
-                <label for="height">Ūgis</label>
-                <md-input
-                  type="number"
-                  id="height"
-                  name="height"
-                  autocomplete="height"
-                  v-model="form.height"
-                  :disabled="sending"
-                />
-                <span class="md-error" v-if="!$v.form.height.required"
-                  >Ūgis yra privalomas</span
-                >
-                <span class="md-error" v-else-if="!$v.form.height.maxlength"
-                  >Netinkamas ūgis</span
-                >
-              </md-field>
-            </div>
-
-            <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('weight')">
-                <label for="age">Svoris</label>
-                <md-input
-                  type="number"
-                  id="weight"
-                  name="weight"
-                  autocomplete="weight"
-                  v-model="form.weight"
-                  :disabled="sending"
-                />
-                <span class="md-error" v-if="!$v.form.weight.required"
-                  >Svoris yra privalomas</span
-                >
-                <span class="md-error" v-else-if="!$v.form.weight.maxlength"
-                  >Netinkamas svoris</span
-                >
-              </md-field>
-            </div>
-          </div>
+          <md-field :class="getValidationClass('password')">
+            <label for="password">Pakartokite slaptažodį</label>
+            <md-input
+              type="password"
+              name="repeatPassword"
+              id="repeatPassword"
+              autocomplete="password"
+              v-model="form.repeatPassword"
+              :disabled="sending"
+            />
+            <span class="md-error" v-if="!$v.form.password.required"
+              >Slaptažodis yra privalomas</span
+            >
+            <span class="md-error" v-else-if="!$v.form.password.minLength"
+              >Netinkamas slaptažodis</span
+            >
+          </md-field>
         </md-card-content>
 
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
         <md-card-actions>
+          <div class="actions md-layout md-alignment-center-space-between">
+            <button
+              @click="$router.go(-1)"
+              class="btn btn-danger"
+              style="margin-right: 270px;"
+              type="button"
+            >
+              Atgal
+            </button>
+          </div>
           <md-button
             type="submit"
             class="md-primary md-raised"
@@ -119,56 +92,45 @@
           >
         </md-card-actions>
       </md-card>
-
-      <md-snackbar :md-active.sync="userSaved"
-        >Vartotojas {{ lastUser }} užregistruotas sėkmingai!</md-snackbar
-      >
     </form>
   </div>
 </template>
 
 <script>
 import { validationMixin } from "vuelidate";
-import { required, email, between, maxLength } from "vuelidate/lib/validators";
+import { required, email, minLength, sameAs } from "vuelidate/lib/validators";
+import Vue from "vue";
+//import { swal } from "vue/types/umd";
 
 export default {
   name: "FormValidation",
   mixins: [validationMixin],
   data: () => ({
     form: {
-      gender: null,
-      age: null,
       email: null,
-      height: null,
-      weight: null,
+      password: "",
+      repeatPassword: "",
     },
-    userSaved: false,
+    registerData: {
+      email: null,
+      password: "",
+    },
     sending: false,
-    lastUser: null,
   }),
   validations: {
     form: {
-      age: {
-        required,
-        maxLength: maxLength(3),
-        between: between(0, 130),
-      },
-      gender: {
-        required,
-      },
       email: {
         required,
         email,
       },
-      height: {
+      password: {
         required,
-        maxLength: maxLength(3),
-        between: between(0, 250),
+        minLength: minLength(8),
       },
-      weight: {
+      repeatPassword: {
         required,
-        maxLength: maxLength(3),
-        between: between(0, 300),
+        minLength: minLength(8),
+        sameAsPassword: sameAs("password"),
       },
     },
   },
@@ -184,30 +146,44 @@ export default {
     },
     clearForm() {
       this.$v.$reset();
-      this.form.firstName = null;
-      this.form.lastName = null;
-      this.form.age = null;
-      this.form.gender = null;
       this.form.email = null;
-      this.form.height = null;
-      this.form.weight = null;
+      this.form.password = null;
+      this.form.repeatPassword = null;
     },
-    saveUser() {
+    async register() {
       this.sending = true;
+      this.registerData.email = this.form.email;
+      this.registerData.password = this.form.password;
 
-      // Instead of this timeout, here you can call your API
-      window.setTimeout(() => {
-        this.lastUser = `${this.form.email}`;
-        this.userSaved = true;
-        this.sending = false;
-        this.clearForm();
-      }, 1500);
+      await Vue.axios
+        .post("users/register", this.registerData)
+        .then(() => {
+          Vue.swal("", "Registracija sėkminga", "success");
+          this.$router.replace({
+            name: "Login",
+          });
+        })
+        .catch((error) => {
+          if (error.response.status === 409) {
+            Vue.swal(
+              "Klaida",
+              "Vartotojas su tokiu el-paštu jau egzistuoja",
+              "error"
+            );
+          }
+          if (error.response.status === 403) {
+            Vue.swal("Klaida", "Netinkamas slaptažodis", "error");
+          }
+        });
+
+      this.sending = false;
+      this.clearForm();
     },
     validateUser() {
       this.$v.$touch();
 
       if (!this.$v.$invalid) {
-        this.saveUser();
+        this.register();
       }
     },
   },
@@ -233,7 +209,7 @@ export default {
 }
 .form {
   margin-bottom: 60px;
-  width: 800px;
+  width: 450px;
 }
 .md-progress-bar {
   position: absolute;
@@ -241,7 +217,11 @@ export default {
   right: 0;
   left: 0;
 }
-
+ul li {
+  list-style-type: circle;
+  display: list-item;
+  list-style-position: inside;
+}
 .md-content {
   z-index: 1;
   padding: 40px;
