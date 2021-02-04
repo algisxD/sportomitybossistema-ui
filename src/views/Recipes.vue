@@ -2,12 +2,23 @@
   <div>
     <PageTitle v-bind:title="title" />
     <div class="row offset-md-1 col-lg-10">
+      <b-button
+        type="button"
+        v-if="authenticated"
+        class="btn btn-secondary button"
+        v-b-modal.modal-tall
+      >
+        Pridėti receptą
+      </b-button>
+    </div>
+    <AddRecipe v-bind:showModal="showModal" />
+    <div class="row offset-md-1 col-lg-10">
       <div
         class="col-lg-4 zoom "
         v-for="(recipe, index) in recipes"
         :key="index"
       >
-        <md-card class="cards background">
+        <md-card class="cards shadow-border">
           <md-card-media>
             <img
               id="img"
@@ -18,7 +29,7 @@
 
           <md-card-header>
             <div class="md-title">{{ recipe.pavadinimas }}</div>
-            <div class="md-subhead">Sukūrė: a</div>
+            <div class="md-subhead">Sukūrė: {{ recipe.vartotojas.vardas }}</div>
           </md-card-header>
 
           <md-card-expand>
@@ -37,16 +48,21 @@
 <script>
 import PageTitle from "../components/PageTitle";
 import Vue from "vue";
+import AddRecipe from "./RecipePages/AddRecipe";
+import { mapGetters } from "vuex";
+import { eventBus } from "../main.js";
 
 export default {
   components: {
     PageTitle,
+    AddRecipe,
   },
   data() {
     return {
       title: "Receptai",
       recipes: undefined,
       result: "",
+      showModal: false,
     };
   },
   methods: {
@@ -55,16 +71,26 @@ export default {
       this.createBase64Image(selectedImage);
     },
   },
-  mounted() {
-    Vue.axios.get("https://localhost:44397/api/receptas").then((response) => {
-      this.recipes = response.data;
-      console.warn(response.data);
+  created() {
+    eventBus.$on("changeshowModal", (data) => {
+      this.showModal = data;
     });
+  },
+  mounted() {
+    Vue.axios.get("/receptas").then((response) => {
+      this.recipes = response.data;
+    });
+  },
+  computed: {
+    ...mapGetters({
+      authenticated: "auth/authenticated",
+      user: "auth/user",
+    }),
   },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .cards {
   margin-top: 20px;
 }
@@ -84,5 +110,33 @@ export default {
   -ms-transform: scale(1.05); /* IE 9 */
   -webkit-transform: scale(1.05); /* Safari 3-8 */
   transform: scale(1.05);
+}
+.button {
+  width: 100%;
+  height: 100px;
+  margin-top: 20px;
+  appearance: none;
+  outline: none;
+  border: none;
+
+  display: inline-block;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 700;
+
+  box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+  transition: 0.4s ease-out;
+
+  &:hover {
+    box-shadow: 6px 6px rgba(0, 0, 0, 0.6);
+  }
+}
+.button-space {
+  height: 500px;
+  width: 100%;
+  z-index: -1;
+}
+.shadow-border {
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 }
 </style>
