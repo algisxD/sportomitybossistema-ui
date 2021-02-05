@@ -1,31 +1,76 @@
 <template>
-  <div>
+  <div class="d-flex justify-content-between align-items-center">
     <PageTitle v-bind:title="title" />
+    <div>Showing {{ start }} to {{ stop }} of {{ total }}</div>
+
+    <pagination
+      v-model="page"
+      :page-count="pageCount"
+      :classes="paginationClasses"
+    />
   </div>
 </template>
 
 <script>
-import Vue from "vue";
-import axios from "axios";
-import VueAxios from "vue-axios";
+import Pagination from "vue-plain-pagination";
 import PageTitle from "../components/PageTitle";
-
-Vue.use(VueAxios, axios);
 
 export default {
   components: {
+    Pagination,
     PageTitle,
   },
-  data() {
-    return { list: undefined, title: "Kalorijų skaičiuoklė" };
+  props: {
+    total: {
+      type: Number,
+      default: 0,
+    },
   },
-  mounted() {
-    Vue.axios.get("https://localhost:44397/api/Produktas").then((response) => {
-      this.list = response.data;
-      console.warn(response.data);
-    });
+  data() {
+    return {
+      paginationClasses: {
+        ul: "pagination",
+        li: "page-item",
+        liActive: "active",
+        liDisable: "disabled",
+        button: "page-link",
+      },
+    };
+  },
+
+  computed: {
+    page: {
+      get() {
+        return parseInt(this.$route.query.page || 1);
+      },
+
+      set(v) {
+        if (v > 0 && v !== this.page) {
+          this.$router.push({
+            path: this.$route.path,
+            query: { ...this.$route.query, page: v, sz: this.sz },
+          });
+        }
+      },
+    },
+
+    sz() {
+      return parseInt(this.$route.query.sz || 25);
+    },
+
+    pageCount() {
+      return Math.ceil(this.total / this.sz);
+    },
+
+    start() {
+      return this.sz * (this.page - 1) + 1;
+    },
+
+    stop() {
+      const stop = this.start - 1 + this.sz;
+
+      return stop > this.total ? this.total : stop;
+    },
   },
 };
 </script>
-
-<style lang="stylus" scoped></style>

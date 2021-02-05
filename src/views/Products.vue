@@ -51,10 +51,9 @@
 
 <script>
 import PageTitle from "../components/PageTitle";
-import Vue from "vue";
+import axios from "axios";
 import searchResults from "../components/ProductPage/searchResults";
 import productInformation from "../components/ProductPage/productInformation";
-//import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -70,7 +69,7 @@ export default {
     pressedSearch: false,
   }),
   mounted() {
-    Vue.axios.get("https://localhost:44397/api/Produktas").then((response) => {
+    axios.get("Produktas").then((response) => {
       this.products = response.data;
       console.warn(response.data);
     });

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-bottom: 50px;">
     <PageTitle v-bind:title="title" />
     <div class="row offset-md-1 col-lg-10">
       <b-button
@@ -35,7 +35,9 @@
           <md-card-expand>
             <md-card-actions>
               <div>
-                <md-button>Peržiūrėti</md-button>
+                <router-link :to="'/recipes/' + recipe.id"
+                  ><md-button>Peržiūrėti</md-button></router-link
+                >
               </div>
             </md-card-actions>
           </md-card-expand>
@@ -47,7 +49,7 @@
 
 <script>
 import PageTitle from "../components/PageTitle";
-import Vue from "vue";
+import axios from "axios";
 import AddRecipe from "./RecipePages/AddRecipe";
 import { mapGetters } from "vuex";
 import { eventBus } from "../main.js";
@@ -77,8 +79,9 @@ export default {
     });
   },
   mounted() {
-    Vue.axios.get("/receptas").then((response) => {
+    axios.get("/receptas").then((response) => {
       this.recipes = response.data;
+      console.log(response.data);
     });
   },
   computed: {

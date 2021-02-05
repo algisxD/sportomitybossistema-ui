@@ -7,6 +7,7 @@ import Kcal from "../views/Kcal.vue";
 import Products from "../views/Products.vue";
 import Register from "../views/Register.vue";
 import Login from "../views/Login.vue";
+import RecipesView from "../views/RecipePages/RecipesView.vue";
 
 Vue.use(VueRouter);
 
@@ -25,6 +26,11 @@ const routes = [
     path: "/recipes",
     name: "Recipes",
     component: Recipes,
+  },
+  {
+    path: "/recipes/:id",
+    name: "RecipesView",
+    component: RecipesView,
   },
   {
     path: "/products",

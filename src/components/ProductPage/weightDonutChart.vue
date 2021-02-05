@@ -16,7 +16,7 @@ import { eventBus } from "../../main.js";
 
 export default {
   props: ["item"],
-  data() {
+  data: function() {
     return {
       options: {
         labels: ["Angliavandeniai", "Riebalai", "Baltymai", "Vanduo"],
