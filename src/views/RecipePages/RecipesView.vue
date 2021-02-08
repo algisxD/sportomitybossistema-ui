@@ -6,7 +6,9 @@
       <div
         class="col-lg-4"
         style="float: left; margin: 1%; margin-left: 3%; margin-right: 0; padding: 0px;"
-      ></div>
+      >
+        <RecipeInstruction class="cardBackground" v-bind:recipe="recipe" />
+      </div>
 
       <transition
         mode="in"
@@ -21,6 +23,7 @@
 <script>
 import axios from "axios";
 import PageTitle from "../../components/PageTitle";
+import RecipeInstruction from "../../components/RecipePage/RecipeInstruction";
 import productInformation from "../../components/ProductPage/productInformation";
 import { eventBus } from "../../main.js";
 
@@ -28,6 +31,7 @@ export default {
   components: {
     PageTitle,
     productInformation,
+    RecipeInstruction,
   },
   data: function() {
     return {

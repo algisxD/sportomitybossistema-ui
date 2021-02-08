@@ -2,11 +2,18 @@
   <div class="d-flex justify-content-between align-items-center">
     <PageTitle v-bind:title="title" />
     <div>Showing {{ start }} to {{ stop }} of {{ total }}</div>
-
+    <ul>
+      <li>asdasd</li>
+      <li>asdasd</li>
+      <li>fdsgsdfgsd</li>
+    </ul>
+    <li>asd</li>
+    <li>sadasd</li>
     <pagination
       v-model="page"
       :page-count="pageCount"
       :classes="paginationClasses"
+      :labels="customLabels"
     />
   </div>
 </template>
@@ -34,6 +41,12 @@ export default {
         liActive: "active",
         liDisable: "disabled",
         button: "page-link",
+      },
+      customLabels: {
+        first: false,
+        prev: "Previous",
+        next: "Next",
+        last: false,
       },
     };
   },
@@ -74,3 +87,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@import "http://getbootstrap.com/docs/4.1/components/pagination/";
+</style>

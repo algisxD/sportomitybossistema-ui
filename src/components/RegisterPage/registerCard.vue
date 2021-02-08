@@ -16,6 +16,57 @@
         </md-card-header>
 
         <md-card-content>
+          <div class="md-layout md-gutter">
+            <div class="md-layout-item md-small-size-100">
+              <md-field>
+                <label for="first-name">Vardas</label>
+                <md-input />
+                <span class="md-error">The first name is required</span>
+                <span class="md-error">Invalid first name</span>
+              </md-field>
+            </div>
+
+            <div class="md-layout-item md-small-size-100">
+              <md-field>
+                <label for="last-name">Pavardė</label>
+                <md-input />
+                <span class="md-error">The last name is required</span>
+                <span class="md-error">Invalid last name</span>
+              </md-field>
+            </div>
+          </div>
+          <div class="md-layout md-gutter">
+            <div class="md-layout-item md-small-size-100">
+              <md-field>
+                <label for="first-name">Ūgis</label>
+                <md-input
+                  type="number"
+                  name="height"
+                  id="height"
+                  v-model="form.user.ugis"
+                  :disabled="sending"
+                />
+                <span class="md-error">The first name is required</span>
+                <span class="md-error">Invalid first name</span>
+              </md-field>
+            </div>
+
+            <div class="md-layout-item md-small-size-100">
+              <md-field>
+                <label for="weight">Svoris</label>
+                <md-input
+                  type="number"
+                  name="weight"
+                  id="weight"
+                  v-model="form.user.svoris"
+                  :disabled="sending"
+                />
+                <span class="md-error">The last name is required</span>
+                <span class="md-error">Invalid last name</span>
+              </md-field>
+            </div>
+          </div>
+
           <md-field :class="getValidationClass('email')">
             <label for="email">El. paštas</label>
             <md-input
@@ -98,7 +149,13 @@
 
 <script>
 import { validationMixin } from "vuelidate";
-import { required, email, minLength, sameAs } from "vuelidate/lib/validators";
+import {
+  required,
+  email,
+  minLength,
+  sameAs,
+  between,
+} from "vuelidate/lib/validators";
 import Vue from "vue";
 //import { swal } from "vue/types/umd";
 
@@ -110,6 +167,12 @@ export default {
       email: null,
       password: "",
       repeatPassword: "",
+      user: {
+        vardas: "",
+        pavarde: "",
+        ugis: 0,
+        svoris: 0,
+      },
     },
     registerData: {
       email: null,
@@ -119,6 +182,14 @@ export default {
   }),
   validations: {
     form: {
+      user: {
+        height: {
+          between: between(50, 250),
+        },
+        weight: {
+          between: between(30, 300),
+        },
+      },
       email: {
         required,
         email,
@@ -196,7 +267,7 @@ export default {
   align-items: center;
   justify-content: center;
   position: relative;
-  height: 80vh;
+  height: 90vh;
 }
 .title {
   text-align: center;

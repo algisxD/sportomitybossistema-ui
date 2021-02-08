@@ -18,7 +18,7 @@
         v-for="(recipe, index) in recipes"
         :key="index"
       >
-        <md-card class="cards shadow-border">
+        <md-card md-with-hover class="cards shadow-border">
           <md-card-media>
             <img
               id="img"
@@ -35,7 +35,12 @@
           <md-card-expand>
             <md-card-actions>
               <div>
-                <router-link :to="'/recipes/' + recipe.id"
+                <router-link
+                  v-on:click="sendSelectedRecipeInfo(recipe)"
+                  :to="{
+                    path: '/recipes/' + recipe.id,
+                    params: { recipeInfo: recipe },
+                  }"
                   ><md-button>Peržiūrėti</md-button></router-link
                 >
               </div>
@@ -67,12 +72,7 @@ export default {
       showModal: false,
     };
   },
-  methods: {
-    handleImage(e) {
-      const selectedImage = e.target;
-      this.createBase64Image(selectedImage);
-    },
-  },
+  methods: {},
   created() {
     eventBus.$on("changeshowModal", (data) => {
       this.showModal = data;
@@ -94,6 +94,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.md-card-header {
+  background-color: #508991;
+}
+.md-card.md-theme-default .md-card-expand .md-card-actions {
+  background-color: #508991;
+}
 .cards {
   margin-top: 20px;
 }
@@ -104,15 +110,6 @@ export default {
 #img {
   width: 500px;
   height: 300px;
-}
-.zoom {
-  transition: transform 0.2s; /* Animation */
-  margin: 0 auto;
-}
-.zoom:hover {
-  -ms-transform: scale(1.05); /* IE 9 */
-  -webkit-transform: scale(1.05); /* Safari 3-8 */
-  transform: scale(1.05);
 }
 .button {
   width: 100%;
