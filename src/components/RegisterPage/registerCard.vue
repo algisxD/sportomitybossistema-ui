@@ -18,51 +18,71 @@
         <md-card-content>
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
-              <md-field>
-                <label for="first-name">Vardas</label>
-                <md-input />
-                <span class="md-error">The first name is required</span>
-                <span class="md-error">Invalid first name</span>
+              <md-field :class="getValidationClass('name')">
+                <label>Vardas</label>
+                <md-input
+                  name="name"
+                  id="name"
+                  v-model="form.name"
+                  :disabled="sending"
+                />
+                <span class="md-error" v-if="!$v.form.name.required"
+                  >Vardas yra privalomas</span
+                >
               </md-field>
             </div>
 
             <div class="md-layout-item md-small-size-100">
-              <md-field>
-                <label for="last-name">Pavardė</label>
-                <md-input />
-                <span class="md-error">The last name is required</span>
-                <span class="md-error">Invalid last name</span>
+              <md-field :class="getValidationClass('surname')">
+                <label>Pavardė</label>
+                <md-input
+                  name="surname"
+                  id="surname"
+                  v-model="form.surname"
+                  :disabled="sending"
+                />
+                <span class="md-error" v-if="!$v.form.surname.required"
+                  >Pavardė yra privaloma</span
+                >
               </md-field>
             </div>
           </div>
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
-              <md-field>
-                <label for="first-name">Ūgis</label>
+              <md-field :class="getValidationClass('height')">
+                <label>Ūgis</label>
                 <md-input
                   type="number"
                   name="height"
                   id="height"
-                  v-model="form.user.ugis"
+                  v-model="form.height"
                   :disabled="sending"
                 />
-                <span class="md-error">The first name is required</span>
-                <span class="md-error">Invalid first name</span>
+                <span class="md-error" v-if="!$v.form.height.required"
+                  >Ūgis yra privalomas</span
+                >
+                <span class="md-error" v-else-if="!$v.form.height.between"
+                  >Ūgis turi būti tarp 50-250 cm</span
+                >
               </md-field>
             </div>
 
             <div class="md-layout-item md-small-size-100">
-              <md-field>
-                <label for="weight">Svoris</label>
+              <md-field :class="getValidationClass('weight')">
+                <label>Svoris</label>
                 <md-input
                   type="number"
                   name="weight"
                   id="weight"
-                  v-model="form.user.svoris"
+                  v-model="form.weight"
                   :disabled="sending"
                 />
-                <span class="md-error">The last name is required</span>
-                <span class="md-error">Invalid last name</span>
+                <span class="md-error" v-if="!$v.form.weight.required"
+                  >Svoris yra privalomas</span
+                >
+                <span class="md-error" v-else-if="!$v.form.weight.between"
+                  >Svoris turi būti tarp 30-300 kg</span
+                >
               </md-field>
             </div>
           </div>
@@ -156,6 +176,7 @@ import {
   sameAs,
   between,
 } from "vuelidate/lib/validators";
+import axios from "axios";
 import Vue from "vue";
 //import { swal } from "vue/types/umd";
 
@@ -167,6 +188,14 @@ export default {
       email: null,
       password: "",
       repeatPassword: "",
+      name: "",
+      surname: "",
+      height: 0,
+      weight: 0,
+    },
+    registerData: {
+      email: null,
+      password: "",
       user: {
         vardas: "",
         pavarde: "",
@@ -174,21 +203,23 @@ export default {
         svoris: 0,
       },
     },
-    registerData: {
-      email: null,
-      password: "",
-    },
     sending: false,
   }),
   validations: {
     form: {
-      user: {
-        height: {
-          between: between(50, 250),
-        },
-        weight: {
-          between: between(30, 300),
-        },
+      height: {
+        required,
+        between: between(50, 250),
+      },
+      weight: {
+        required,
+        between: between(30, 300),
+      },
+      name: {
+        required,
+      },
+      surname: {
+        required,
       },
       email: {
         required,
@@ -225,8 +256,12 @@ export default {
       this.sending = true;
       this.registerData.email = this.form.email;
       this.registerData.password = this.form.password;
+      this.registerData.user.vardas = this.form.name;
+      this.registerData.user.pavarde = this.form.surname;
+      this.registerData.user.svoris = this.form.weight;
+      this.registerData.user.ugis = this.form.height;
 
-      await Vue.axios
+      await axios
         .post("users/register", this.registerData)
         .then(() => {
           Vue.swal("", "Registracija sėkminga", "success");
