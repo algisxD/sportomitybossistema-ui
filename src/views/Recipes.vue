@@ -6,16 +6,26 @@
         type="button"
         v-if="authenticated"
         class="btn btn-secondary button"
-        v-b-modal.modal-tall
+        v-b-modal.modal-center
       >
         Pridėti receptą
       </b-button>
+
+      <b-modal
+        hide-footer="true"
+        ok-title="Skelbti"
+        cancel-title="Atšaukti"
+        id="modal-center"
+        centered
+        title="Pridėkite savo receptą"
+      >
+        <AddRecipeForm />
+      </b-modal>
     </div>
-    <AddRecipe v-bind:showModal="showModal" />
     <div class="row offset-md-1 col-lg-10">
       <div
-        class="col-lg-4 zoom "
-        v-for="(recipe, index) in recipes"
+        class="col-lg-4"
+        v-for="(recipe, index) in limitedRecipes"
         :key="index"
       >
         <md-card md-with-hover class="cards shadow-border">
@@ -49,30 +59,49 @@
         </md-card>
       </div>
     </div>
+    <div class="container">
+      <div class="center">
+        <button
+          v-on:click="displayMoreRecipes"
+          type="button"
+          class="btn btn-primary showMoreButton center-element"
+        >
+          <i :class="'ion-ios-arrow-down'" /> Rodyti daugiau
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import AddRecipeForm from "../components/RecipePage/AddRecipeForm";
 import PageTitle from "../components/PageTitle";
 import axios from "axios";
-import AddRecipe from "./RecipePages/AddRecipe";
 import { mapGetters } from "vuex";
 import { eventBus } from "../main.js";
 
 export default {
   components: {
     PageTitle,
-    AddRecipe,
+    AddRecipeForm,
   },
   data() {
     return {
+      recipesToDisplayNumber: 9,
       title: "Receptai",
-      recipes: undefined,
+      recipes: [],
       result: "",
       showModal: false,
     };
   },
-  methods: {},
+  methods: {
+    displayModal() {
+      this.showModal = true;
+    },
+    displayMoreRecipes() {
+      this.recipesToDisplayNumber += 9;
+    },
+  },
   created() {
     eventBus.$on("changeshowModal", (data) => {
       this.showModal = data;
@@ -89,6 +118,9 @@ export default {
       authenticated: "auth/authenticated",
       user: "auth/user",
     }),
+    limitedRecipes() {
+      return this.recipes.slice(0, this.recipesToDisplayNumber);
+    },
   },
 };
 </script>
@@ -110,6 +142,26 @@ export default {
 #img {
   width: 500px;
   height: 300px;
+}
+.showMoreButton {
+  width: 200px;
+  height: 70px;
+  margin-top: 20px;
+  appearance: none;
+  outline: none;
+  border: none;
+
+  display: inline-block;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 700;
+
+  box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+  transition: 0.4s ease-out;
+
+  &:hover {
+    box-shadow: 6px 6px rgba(0, 0, 0, 0.6);
+  }
 }
 .button {
   width: 100%;
@@ -138,5 +190,18 @@ export default {
 }
 .shadow-border {
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+.container {
+  height: 200px;
+  position: relative;
+}
+
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 </style>

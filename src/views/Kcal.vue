@@ -1,30 +1,22 @@
 <template>
   <div class="d-flex justify-content-between align-items-center">
     <PageTitle v-bind:title="title" />
-    <div>Showing {{ start }} to {{ stop }} of {{ total }}</div>
-    <ul>
-      <li>asdasd</li>
-      <li>asdasd</li>
-      <li>fdsgsdfgsd</li>
-    </ul>
-    <li>asd</li>
-    <li>sadasd</li>
-    <pagination
-      v-model="page"
-      :page-count="pageCount"
-      :classes="paginationClasses"
-      :labels="customLabels"
-    />
+
+    <div>
+      <b-button v-b-modal.modal-center>Launch centered modal</b-button>
+
+      <b-modal id="modal-center" centered title="BootstrapVue">
+        <p class="my-4">Vertically centered modal!</p>
+      </b-modal>
+    </div>
   </div>
 </template>
 
 <script>
-import Pagination from "vue-plain-pagination";
 import PageTitle from "../components/PageTitle";
 
 export default {
   components: {
-    Pagination,
     PageTitle,
   },
   props: {
@@ -90,4 +82,7 @@ export default {
 
 <style scoped>
 @import "http://getbootstrap.com/docs/4.1/components/pagination/";
+li {
+  background: black;
+}
 </style>
