@@ -6,21 +6,15 @@
         type="button"
         v-if="authenticated"
         class="btn btn-secondary button"
-        v-b-modal.modal-center
+        @click="showDialog = true"
       >
         Pridėti receptą
       </b-button>
 
-      <b-modal
-        hide-footer="true"
-        ok-title="Skelbti"
-        cancel-title="Atšaukti"
-        id="modal-center"
-        centered
-        title="Pridėkite savo receptą"
-      >
-        <AddRecipeForm />
-      </b-modal>
+      <md-dialog :md-active.sync="showDialog">
+        <md-dialog-title>Pridėkite savo receptą</md-dialog-title>
+        <md-dialog-content><AddRecipeForm /></md-dialog-content>
+      </md-dialog>
     </div>
     <div class="row offset-md-1 col-lg-10">
       <div
@@ -87,6 +81,7 @@ export default {
   },
   data() {
     return {
+      showDialog: false,
       recipesToDisplayNumber: 9,
       title: "Receptai",
       recipes: [],
@@ -195,7 +190,6 @@ export default {
   height: 200px;
   position: relative;
 }
-
 .center {
   margin: 0;
   position: absolute;
@@ -203,5 +197,8 @@ export default {
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+.md-dialog {
+  z-index: 9;
 }
 </style>

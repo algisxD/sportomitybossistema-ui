@@ -1,8 +1,13 @@
 <template>
   <div>
-    <form class="form" novalidate @submit.prevent="validateUser">
+    <form
+      enctype="multipart/form-data"
+      class="form"
+      novalidate
+      @submit.prevent="validateUser"
+    >
       <md-card class="md-layout-item md-size-100 md-small-size-100">
-        <md-card-content>
+        <md-card-content style="margin-right: 0px;">
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('name')">
@@ -77,6 +82,73 @@
               </md-field>
             </div>
           </div>
+          <div
+            v-for="index in productsInputFieldCount"
+            :key="index"
+            class="md-layout md-gutter"
+          >
+            <div class="md-layout-item md-small-size-100">
+              <md-autocomplete
+                :md-options="products"
+                :md-open-on-focus="false"
+                :md-dense="true"
+              >
+                <label>Produktas</label>
+
+                <template
+                  slot="md-autocomplete-item"
+                  slot-scope="{ item, term }"
+                >
+                  <md-highlight-text :md-term="term">{{
+                    item.pavadinimas
+                  }}</md-highlight-text>
+                </template>
+                <template slot="md-autocomplete-empty" slot-scope="{ term }">
+                  Tokio produkto "{{ term }}" nėra
+                </template>
+              </md-autocomplete>
+            </div>
+            <div class="md-layout-item md-small-size-100">
+              <md-field :class="getValidationClass('portions')">
+                <label>Kiekis</label>
+                <md-input
+                  type="number"
+                  name="portions"
+                  id="portions"
+                  v-model="form.portions"
+                  :disabled="sending"
+                />
+                <span class="md-error" v-if="!$v.form.portions.required"
+                  >Pocijų skaičius yra privalomas</span
+                >
+                <span class="md-error" v-else-if="!$v.form.portions.between"
+                  >Porcijų skaičius turi būti tarp 1-100</span
+                >
+              </md-field>
+            </div>
+          </div>
+          <div id="wrapper">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="increaseProductCount"
+            >
+              <i class="ion-md-add"></i>
+            </button>
+          </div>
+          <div class="md-layout md-gutter">
+            <div class="md-layout-item md-small-size-100">
+              <md-field>
+                <label>Nuotrauka</label>
+                <md-file
+                  name="image"
+                  id="image"
+                  v-model="form.image"
+                  accept="image/*"
+                />
+              </md-field>
+            </div>
+          </div>
         </md-card-content>
 
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
@@ -103,11 +175,22 @@ export default {
   name: "FormValidation",
   mixins: [validationMixin],
   data: () => ({
+    showDialog: false,
+    products: undefined,
+    productsInputFieldCount: 1,
     form: {
       name: "",
       cookingTime: 0,
       portions: 0,
       description: "",
+      image: null,
+    },
+    recipeData: {
+      name: "",
+      cookingTime: 0,
+      portions: 0,
+      description: "",
+      image: null,
     },
     sending: false,
   }),
@@ -131,6 +214,9 @@ export default {
     },
   },
   methods: {
+    increaseProductCount() {
+      this.productsInputFieldCount += 1;
+    },
     getValidationClass(fieldName) {
       const field = this.$v.form[fieldName];
 
@@ -145,12 +231,16 @@ export default {
     },
     async createNewRecipe() {
       this.sending = true;
-      this.registerData.email = this.form.email;
-      this.registerData.password = this.form.password;
-      this.registerData.user.vardas = this.form.name;
-      this.registerData.user.pavarde = this.form.surname;
-      this.registerData.user.svoris = this.form.weight;
-      this.registerData.user.ugis = this.form.height;
+
+      console.log(this.form);
+
+      this.recipeData.name = this.form.name;
+      this.recipeData.cookingTime = this.form.cookingTime;
+      this.recipeData.portions = this.form.portions;
+      this.recipeData.description = this.form.description;
+      this.recipeData.image = this.form.image;
+
+      await axios.post("users/register", this.recipeData);
 
       this.sending = false;
       this.clearForm();
@@ -166,10 +256,11 @@ export default {
   mounted() {
     axios.get("https://localhost:44397/api/Produktas").then((response) => {
       this.products = response.data;
+      this.productsNames = response.data.pavadinimas;
       console.warn(response.data);
     });
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="scss"></style>
