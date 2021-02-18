@@ -1,21 +1,43 @@
 <template>
-  <div>
-    <md-dialog :md-active.sync="showDialog">
-      <md-dialog-title>Preferences</md-dialog-title>
-    </md-dialog>
-
-    <md-button class="md-primary md-raised" @click="showDialog = true"
-      >Show Dialog</md-button
-    >
+  <div id="wrapper">
+    <div>
+      <input
+        type="file"
+        @change="onFileSelected"
+        enctype="multipart/form-data"
+      />
+      <button
+        type="submit"
+        @click="post"
+        class="btn btn-primary"
+        style="width: 80px;"
+      >
+        submit
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "DialogCustom",
   data: () => ({
-    showDialog: false,
+    image: null,
   }),
+  methods: {
+    onFileSelected(event) {
+      this.image = event.target.files[0];
+    },
+    post() {
+      const fd = new FormData();
+      fd.append("image", this.image, this.image.name);
+      axios.post("Receptas/upload", fd).then((res) => {
+        console.log(res);
+      });
+    },
+  },
 };
 </script>
 

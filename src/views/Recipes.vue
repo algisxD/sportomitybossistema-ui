@@ -13,7 +13,9 @@
 
       <md-dialog :md-active.sync="showDialog">
         <md-dialog-title>Pridėkite savo receptą</md-dialog-title>
-        <md-dialog-content><AddRecipeForm /></md-dialog-content>
+        <md-dialog-content class="md-scrollbar"
+          ><AddRecipeForm
+        /></md-dialog-content>
       </md-dialog>
     </div>
     <div class="row offset-md-1 col-lg-10">
@@ -135,7 +137,7 @@ export default {
   float: center;
 }
 #img {
-  width: 500px;
+  width: 100%;
   height: 300px;
 }
 .showMoreButton {

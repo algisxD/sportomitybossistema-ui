@@ -7,7 +7,7 @@
       @submit.prevent="validateUser"
     >
       <md-card class="md-layout-item md-size-100 md-small-size-100">
-        <md-card-content style="margin-right: 0px;">
+        <md-card-content style="margin-right: 0px">
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('name')">
@@ -40,7 +40,7 @@
                   >Gaminimo laikas yra privalomas</span
                 >
                 <span class="md-error" v-else-if="!$v.form.cookingTime.between"
-                  >Gaminimo turi būti tarp 1-1440 min</span
+                  >Gaminimo laikas turi būti tarp 1-1440 min</span
                 >
               </md-field>
             </div>
@@ -63,7 +63,7 @@
               </md-field>
             </div>
           </div>
-          <div class="md-layout md-gutter">
+          <div class="md-layout md-gutter description">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('description')">
                 <label>Aprašymas</label>
@@ -76,7 +76,9 @@
                 <span class="md-error" v-if="!$v.form.description.required"
                   >Aprašymas yra privalomas</span
                 >
-                <span class="md-error" v-else-if="!$v.form.portions.maxLength"
+                <span
+                  class="md-error"
+                  v-else-if="!$v.form.description.maxLength"
                   >Aprašymas negali būti ilgesnis nei 500 simbolių</span
                 >
               </md-field>
@@ -85,13 +87,14 @@
           <div
             v-for="index in productsInputFieldCount"
             :key="index"
-            class="md-layout md-gutter"
+            class="md-layout md-gutter product-quanitity-row"
           >
             <div class="md-layout-item md-small-size-100">
               <md-autocomplete
                 :md-options="products"
                 :md-open-on-focus="false"
                 :md-dense="true"
+                :class="getValidationClass('name')"
               >
                 <label>Produktas</label>
 
@@ -106,23 +109,26 @@
                 <template slot="md-autocomplete-empty" slot-scope="{ term }">
                   Tokio produkto "{{ term }}" nėra
                 </template>
+                <span class="md-error" v-if="!$v.form.name.required"
+                  >Produkto pavadinimas yra privalomas</span
+                >
               </md-autocomplete>
             </div>
             <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('portions')">
-                <label>Kiekis</label>
+              <md-field :class="getValidationClass('quantity')">
+                <label>Kiekis (g)</label>
                 <md-input
                   type="number"
-                  name="portions"
-                  id="portions"
-                  v-model="form.portions"
+                  name="quantity"
+                  id="quantity"
+                  v-model="form.quantity[index - 1]"
                   :disabled="sending"
                 />
-                <span class="md-error" v-if="!$v.form.portions.required"
-                  >Pocijų skaičius yra privalomas</span
+                <span class="md-error" v-if="!$v.form.quantity.required"
+                  >Produkto kiekis yra privalomas</span
                 >
-                <span class="md-error" v-else-if="!$v.form.portions.between"
-                  >Porcijų skaičius turi būti tarp 1-100</span
+                <span class="md-error" v-else-if="!$v.form.quantity.between"
+                  >Produkto kiekis turi būti tarp 1-5000 g</span
                 >
               </md-field>
             </div>
@@ -130,7 +136,7 @@
           <div id="wrapper">
             <button
               type="button"
-              class="btn btn-primary"
+              class="btn btn-primary add-btn"
               @click="increaseProductCount"
             >
               <i class="ion-md-add"></i>
@@ -138,7 +144,7 @@
           </div>
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
-              <md-field>
+              <md-field :class="getValidationClass('image')">
                 <label>Nuotrauka</label>
                 <md-file
                   name="image"
@@ -146,6 +152,9 @@
                   v-model="form.image"
                   accept="image/*"
                 />
+                <span class="md-error" v-if="!$v.form.image.required"
+                  >Nuotrauka yra privaloma</span
+                >
               </md-field>
             </div>
           </div>
@@ -184,6 +193,8 @@ export default {
       portions: 0,
       description: "",
       image: null,
+      productName: [],
+      quantity: [],
     },
     recipeData: {
       name: "",
@@ -210,6 +221,13 @@ export default {
       description: {
         required,
         maxLength: maxLength(500),
+      },
+      quantity: {
+        required,
+        between: between(1, 5000),
+      },
+      image: {
+        required,
       },
     },
   },
@@ -263,4 +281,15 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.description {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+.add-btn {
+  margin-top: 20px;
+}
+.product-quanitity-row {
+  margin-top: 20px;
+}
+</style>
