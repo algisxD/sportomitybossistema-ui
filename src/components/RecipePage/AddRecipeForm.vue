@@ -85,16 +85,17 @@
             </div>
           </div>
           <div
-            v-for="index in productsInputFieldCount"
+            v-for="(v, index) in $v.form.ingredient.$each.$iter"
             :key="index"
-            class="md-layout md-gutter product-quanitity-row"
+            class="md-layout md-gutter quantity-product"
           >
             <div class="md-layout-item md-small-size-100">
               <md-autocomplete
                 :md-options="products"
                 :md-open-on-focus="false"
                 :md-dense="true"
-                :class="getValidationClass('name')"
+                v-model="v.product.$model"
+                :class="getValidationClassForColections(v.product)"
               >
                 <label>Produktas</label>
 
@@ -109,25 +110,25 @@
                 <template slot="md-autocomplete-empty" slot-scope="{ term }">
                   Tokio produkto "{{ term }}" nėra
                 </template>
-                <span class="md-error" v-if="!$v.form.name.required"
+                <span class="md-error" v-if="!v.product.required"
                   >Produkto pavadinimas yra privalomas</span
                 >
               </md-autocomplete>
             </div>
             <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('quantity')">
-                <label>Kiekis (g)</label>
+              <md-field :class="getValidationClassForColections(v.quantity)">
+                <label>Kiekis</label>
                 <md-input
                   type="number"
                   name="quantity"
                   id="quantity"
-                  v-model="form.quantity[index - 1]"
+                  v-model="v.quantity.$model"
                   :disabled="sending"
                 />
-                <span class="md-error" v-if="!$v.form.quantity.required"
+                <span class="md-error" v-if="!v.quantity.required"
                   >Produkto kiekis yra privalomas</span
                 >
-                <span class="md-error" v-else-if="!$v.form.quantity.between"
+                <span class="md-error" v-if="!v.quantity.between"
                   >Produkto kiekis turi būti tarp 1-5000 g</span
                 >
               </md-field>
@@ -136,8 +137,8 @@
           <div id="wrapper">
             <button
               type="button"
-              class="btn btn-primary add-btn"
-              @click="increaseProductCount"
+              class="btn btn-primary"
+              @click="addIngredient"
             >
               <i class="ion-md-add"></i>
             </button>
@@ -149,6 +150,7 @@
                 <md-file
                   name="image"
                   id="image"
+                  @change="onFileSelected"
                   v-model="form.image"
                   accept="image/*"
                 />
@@ -186,15 +188,14 @@ export default {
   data: () => ({
     showDialog: false,
     products: undefined,
-    productsInputFieldCount: 1,
+    productsNames: null,
     form: {
       name: "",
       cookingTime: 0,
       portions: 0,
       description: "",
       image: null,
-      productName: [],
-      quantity: [],
+      ingredient: [{ product: null, quantity: 0 }],
     },
     recipeData: {
       name: "",
@@ -222,16 +223,31 @@ export default {
         required,
         maxLength: maxLength(500),
       },
-      quantity: {
-        required,
-        between: between(1, 5000),
+      ingredient: {
+        $each: {
+          product: {
+            required,
+          },
+          quantity: {
+            required,
+            between: between(1, 5000),
+          },
+        },
       },
+
       image: {
         required,
       },
     },
   },
   methods: {
+    addIngredient() {
+      this.form.ingredient.push({ product: "", quantity: 0 });
+    },
+    onFileSelected(event) {
+      console.log(event)
+      this.image = event.target.files[0];
+    },
     increaseProductCount() {
       this.productsInputFieldCount += 1;
     },
@@ -241,6 +257,13 @@ export default {
       if (field) {
         return {
           "md-invalid": field.$invalid && field.$dirty,
+        };
+      }
+    },
+    getValidationClassForColections(validationObject) {
+      if (validationObject) {
+        return {
+          "md-invalid": validationObject.$invalid && validationObject.$dirty,
         };
       }
     },
@@ -275,7 +298,6 @@ export default {
     axios.get("https://localhost:44397/api/Produktas").then((response) => {
       this.products = response.data;
       this.productsNames = response.data.pavadinimas;
-      console.warn(response.data);
     });
   },
 };
@@ -286,10 +308,7 @@ export default {
   margin-top: 30px;
   margin-bottom: 20px;
 }
-.add-btn {
-  margin-top: 20px;
-}
-.product-quanitity-row {
-  margin-top: 20px;
+.quantity-product {
+  margin-bottom: 20px;
 }
 </style>
