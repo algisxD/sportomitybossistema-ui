@@ -137,8 +137,8 @@ export default {
   float: center;
 }
 #img {
-  width: 100%;
-  height: 300px;
+  width: 640px;
+  height: 360px;
 }
 .showMoreButton {
   width: 200px;

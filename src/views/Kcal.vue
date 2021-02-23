@@ -1,9 +1,11 @@
 <template>
   <div id="wrapper">
+    <h1>{{this.pavadinimas}}</h1>
     <div>
       <input
         type="file"
         @change="onFileSelected"
+        accept="image/*"
         enctype="multipart/form-data"
       />
       <button
@@ -25,6 +27,7 @@ export default {
   name: "DialogCustom",
   data: () => ({
     image: null,
+    pavadinimas: "",
   }),
   methods: {
     onFileSelected(event) {
@@ -35,6 +38,7 @@ export default {
       fd.append("image", this.image, this.image.name);
       axios.post("Receptas/upload", fd).then((res) => {
         console.log(res);
+        this.pavadinimas = res.data;
       });
     },
   },

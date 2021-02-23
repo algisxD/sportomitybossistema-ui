@@ -4,7 +4,7 @@
       enctype="multipart/form-data"
       class="form"
       novalidate
-      @submit.prevent="validateUser"
+      @submit.prevent="validateRecipe"
     >
       <md-card class="md-layout-item md-size-100 md-small-size-100">
         <md-card-content style="margin-right: 0px">
@@ -91,22 +91,13 @@
           >
             <div class="md-layout-item md-small-size-100">
               <md-autocomplete
-                :md-options="products"
+                :md-options="productsNames"
                 :md-open-on-focus="false"
                 :md-dense="true"
                 v-model="v.product.$model"
                 :class="getValidationClassForColections(v.product)"
               >
                 <label>Produktas</label>
-
-                <template
-                  slot="md-autocomplete-item"
-                  slot-scope="{ item, term }"
-                >
-                  <md-highlight-text :md-term="term">{{
-                    item.pavadinimas
-                  }}</md-highlight-text>
-                </template>
                 <template slot="md-autocomplete-empty" slot-scope="{ term }">
                   Tokio produkto "{{ term }}" nėra
                 </template>
@@ -151,12 +142,8 @@
                   name="image"
                   id="image"
                   @change="onFileSelected"
-                  v-model="form.image"
                   accept="image/*"
                 />
-                <span class="md-error" v-if="!$v.form.image.required"
-                  >Nuotrauka yra privaloma</span
-                >
               </md-field>
             </div>
           </div>
@@ -181,6 +168,7 @@
 import { validationMixin } from "vuelidate";
 import { required, between, maxLength } from "vuelidate/lib/validators";
 import axios from "axios";
+//import Vue from "vue";
 
 export default {
   name: "FormValidation",
@@ -188,7 +176,7 @@ export default {
   data: () => ({
     showDialog: false,
     products: undefined,
-    productsNames: null,
+    productsNames: [],
     form: {
       name: "",
       cookingTime: 0,
@@ -198,11 +186,12 @@ export default {
       ingredient: [{ product: null, quantity: 0 }],
     },
     recipeData: {
-      name: "",
-      cookingTime: 0,
-      portions: 0,
-      description: "",
-      image: null,
+      pavadinimas: "",
+      gaminimoLaikas: 0,
+      porcijuSkaicius: 0,
+      aprasymas: "",
+      nuotrauka: null,
+      ingridientai: [],
     },
     sending: false,
   }),
@@ -234,22 +223,22 @@ export default {
           },
         },
       },
-
       image: {
         required,
       },
     },
   },
   methods: {
+    getProductIdByName(name, products) {
+      const product = products.find((item) => item.pavadinimas == name);
+      return product?.id;
+    },
     addIngredient() {
       this.form.ingredient.push({ product: "", quantity: 0 });
     },
     onFileSelected(event) {
-      console.log(event)
-      this.image = event.target.files[0];
-    },
-    increaseProductCount() {
-      this.productsInputFieldCount += 1;
+      console.log(event);
+      this.form.image = event.target.files[0];
     },
     getValidationClass(fieldName) {
       const field = this.$v.form[fieldName];
@@ -272,21 +261,33 @@ export default {
     },
     async createNewRecipe() {
       this.sending = true;
+      const fd = new FormData();
+      fd.append("image", this.form.image, this.form.image.name);
 
-      console.log(this.form);
+      await axios.post("Receptas/upload", fd).then((res) => {
+        this.recipeData.nuotrauka = res.data;
+      });
 
-      this.recipeData.name = this.form.name;
-      this.recipeData.cookingTime = this.form.cookingTime;
-      this.recipeData.portions = this.form.portions;
-      this.recipeData.description = this.form.description;
-      this.recipeData.image = this.form.image;
+      this.recipeData.pavadinimas = this.form.name;
+      this.recipeData.gaminimoLaikas = this.form.cookingTime;
+      this.recipeData.porcijuSkaicius = this.form.portions;
+      this.recipeData.aprasymas = this.form.description;
 
-      await axios.post("users/register", this.recipeData);
+      this.form.ingredient.forEach((item) => {
+        var id = this.getProductIdByName(item.product, this.products);
+        console.log(id);
+        this.recipeData.ingridientai.push({
+          kiekis: item.quantity,
+          produktasId: id,
+        });
+      });
+
+      await axios.post("receptas", this.recipeData);
 
       this.sending = false;
       this.clearForm();
     },
-    validateUser() {
+    validateRecipe() {
       this.$v.$touch();
 
       if (!this.$v.$invalid) {
@@ -297,7 +298,9 @@ export default {
   mounted() {
     axios.get("https://localhost:44397/api/Produktas").then((response) => {
       this.products = response.data;
-      this.productsNames = response.data.pavadinimas;
+      response.data.forEach((item) => {
+        this.productsNames.push(item.pavadinimas);
+      });
     });
   },
 };
