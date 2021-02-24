@@ -7,6 +7,15 @@
       @submit.prevent="validateRecipe"
     >
       <md-card class="md-layout-item md-size-100 md-small-size-100">
+        <md-card-header>
+          <div class="md-title">Pridėkite savo receptą</div>
+          <div style="margin-top: 20px;">
+            <ul>
+              <li>Nuotraukos rekomenduojama rezoliucija: 1920x1080</li>
+              <li>Produktai turi būti pasirenkami iš duoto sąrašo</li>
+            </ul>
+          </div>
+        </md-card-header>
         <md-card-content style="margin-right: 0px">
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
@@ -167,8 +176,9 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, between, maxLength } from "vuelidate/lib/validators";
+import { mapGetters } from "vuex";
 import axios from "axios";
-//import Vue from "vue";
+import Vue from "vue";
 
 export default {
   name: "FormValidation",
@@ -191,6 +201,7 @@ export default {
       porcijuSkaicius: 0,
       aprasymas: "",
       nuotrauka: null,
+      vartotojasId: null,
       ingridientai: [],
     },
     sending: false,
@@ -272,6 +283,7 @@ export default {
       this.recipeData.gaminimoLaikas = this.form.cookingTime;
       this.recipeData.porcijuSkaicius = this.form.portions;
       this.recipeData.aprasymas = this.form.description;
+      this.recipeData.vartotojasId = this.userId;
 
       this.form.ingredient.forEach((item) => {
         var id = this.getProductIdByName(item.product, this.products);
@@ -282,7 +294,23 @@ export default {
         });
       });
 
-      await axios.post("receptas", this.recipeData);
+      await axios
+        .post("receptas", this.recipeData)
+        .then(() => {
+          Vue.swal("", "Receptas sėkmingai sukurtas", "success");
+          this.$emit("closeDialog");
+        })
+        .catch((error) => {
+          if (error.response.status === 400) {
+            Vue.swal("Klaida", "Netinkami recepto duomenys", "error");
+          } else {
+            Vue.swal(
+              "Klaida",
+              "Serverio klaida, susisiekite su administracija",
+              "error"
+            );
+          }
+        });
 
       this.sending = false;
       this.clearForm();
@@ -294,6 +322,11 @@ export default {
         this.createNewRecipe();
       }
     },
+  },
+  computed: {
+    ...mapGetters({
+      userId: "auth/userId",
+    }),
   },
   mounted() {
     axios.get("https://localhost:44397/api/Produktas").then((response) => {
@@ -313,5 +346,10 @@ export default {
 }
 .quantity-product {
   margin-bottom: 20px;
+}
+ul li {
+  list-style-type: circle;
+  display: list-item;
+  list-style-position: inside;
 }
 </style>

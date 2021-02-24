@@ -11,8 +11,6 @@ const getters = {
 const actions = {
   async fetchProducts({ commit }) {
     const response = await axios.get("https://localhost:44397/api/Produktas");
-
-    console.log(response.data);
   },
 };
 

@@ -12,9 +12,8 @@
       </b-button>
 
       <md-dialog :md-active.sync="showDialog">
-        <md-dialog-title>Pridėkite savo receptą</md-dialog-title>
         <md-dialog-content class="md-scrollbar"
-          ><AddRecipeForm
+          ><AddRecipeForm v-on:closeDialog="showDialog = false"
         /></md-dialog-content>
       </md-dialog>
     </div>
