@@ -23,7 +23,23 @@
                 <td>{{ sportProgram.pavadinimas }}</td>
                 <td>{{ sportProgram.sukurimoData }}</td>
                 <td>{{ sportProgram.treniruotes.length }}</td>
-                <td>{{ sportProgram.sukurimoData }}</td>
+                <td>
+                  <b-button-group>
+                    <b-button
+                      @click="displaySelectedSportProgram(sportProgram)"
+                      variant="outline-light"
+                      >Pasirinkti</b-button
+                    >
+                    <b-button
+                      v-if="!sportProgram.arAktyvi"
+                      variant="outline-light"
+                      >Aktyvuoti</b-button
+                    >
+                    <b-button v-else variant="outline-light"
+                      >Deaktyvuoti</b-button
+                    >
+                  </b-button-group>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -33,24 +49,34 @@
 
       <div class="col-lg-5 cardBackground" style="float: left; margin: 1%">
         <h3>Jūsų treniruotės</h3>
-        <div>
+        <div v-if="selectedProgram">
           <table class="table table-hover table-dark table-margins">
             <thead>
               <tr>
                 <th scope="col">Pavadinimas</th>
                 <th scope="col">Savaitės diena</th>
-                <th scope="col">Aktyvinti treniruotę</th>
+                <th scope="col">Treniruotės tipas</th>
+                <th scope="col">Pratimų skaičius</th>
+                <th scope="col">Veiksmai</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td></td>
-                <td>a</td>
-                <td><input type="checkbox" class="check-box" /></td>
+              <tr
+                v-for="(workout, index) in selectedProgram.treniruotes"
+                :key="index"
+              >
+                <td>{{ workout.pavadinimas }}</td>
+                <td>{{ workout.savaitesDiena }}</td>
+                <td>{{ workout.treniruotesTipas }}</td>
+                <td>{{ workout.daromiPratimai.length }}</td>
+                <td>
+                  <b-button variant="outline-light">Peržiūrėti</b-button>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
+        <div v-else><h4 class="text-red-700">Pasirinkite programa.</h4></div>
       </div>
     </div>
     <br /><br />
@@ -69,7 +95,13 @@ export default {
   data: () => ({
     title: "Sporto planavimas",
     sportPrograms: undefined,
+    selectedSportProgram: undefined,
   }),
+  methods: {
+    displaySelectedSportProgram(item) {
+      this.selectedSportProgram = item;
+    },
+  },
   mounted() {
     axios.get("SportoPrograma/user/" + this.userId).then((response) => {
       this.sportPrograms = response.data;
@@ -80,6 +112,9 @@ export default {
     ...mapGetters({
       userId: "auth/userId",
     }),
+    selectedProgram() {
+      return this.selectedSportProgram;
+    },
   },
 };
 </script>
@@ -92,5 +127,8 @@ export default {
 .table-margins {
   margin-top: 30px;
   margin-bottom: 30px;
+}
+.table-button {
+  margin-left: 10px;
 }
 </style>

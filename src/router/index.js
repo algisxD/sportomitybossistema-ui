@@ -10,6 +10,7 @@ import Login from "../views/Login.vue";
 import Sport from "../views/Sport.vue";
 import RecipesView from "../views/RecipePages/RecipesView.vue";
 import SportPlanning from "../views/SportPlanning.vue";
+import Calendar from "../views/Calendar.vue";
 
 Vue.use(VueRouter);
 
@@ -48,6 +49,11 @@ const routes = [
     path: "/kcal",
     name: "Kcal",
     component: Kcal,
+  },
+  {
+    path: "/calendar",
+    name: "Calendar",
+    component: Calendar,
   },
   {
     path: "/sportplanning",

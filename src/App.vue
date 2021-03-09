@@ -69,6 +69,11 @@ export default {
         path: "/sport",
         icon: "ion-ios-american-football",
       },
+      {
+        text: "Kalendorius",
+        path: "/calendar",
+        icon: "ion-ios-calendar",
+      },
     ],
   }),
 };
@@ -89,5 +94,10 @@ figure {
 }
 #nav {
   padding: 30px;
+}
+.footer-a {
+  width: 100%;
+  height: 75px;
+  background-color: blue;
 }
 </style>
