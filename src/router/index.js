@@ -9,6 +9,7 @@ import Register from "../views/Register.vue";
 import Login from "../views/Login.vue";
 import Sport from "../views/Sport.vue";
 import RecipesView from "../views/RecipePages/RecipesView.vue";
+import SportPlanning from "../views/SportPlanning.vue";
 
 Vue.use(VueRouter);
 
@@ -47,6 +48,11 @@ const routes = [
     path: "/kcal",
     name: "Kcal",
     component: Kcal,
+  },
+  {
+    path: "/sportplanning",
+    name: "SportPlanning",
+    component: SportPlanning,
   },
   {
     path: "/register",

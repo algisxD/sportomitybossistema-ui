@@ -14,6 +14,7 @@ import VueSweetalert2 from "vue-sweetalert2";
 import store from "./store";
 import axios from "axios";
 import JwPagination from "jw-vue-pagination";
+import VueFilterDateFormat from '@vuejs-community/vue-filter-date-format';
 
 require("./store/subscriber");
 
@@ -28,6 +29,7 @@ Vue.use(VueApexCharts);
 Vue.component("apexchart", VueApexCharts);
 Vue.component("jw-pagination", JwPagination);
 Vue.use(VueSweetalert2);
+Vue.use(VueFilterDateFormat);
 
 store.dispatch("auth/attempt", localStorage.getItem("token")).then(() => {
   new Vue({

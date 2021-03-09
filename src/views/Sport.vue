@@ -42,7 +42,15 @@
               </md-card-header>
 
               <md-card-actions>
-                <md-button class="md-raised md-primary">Planuoti</md-button>
+                <router-link
+                  v-on:click="sendSelectedRecipeInfo(recipe)"
+                  :to="{
+                    path: '/sportplanning/',
+                  }"
+                  ><md-button class="md-raised md-primary"
+                    >Planuoti</md-button
+                  ></router-link
+                >
               </md-card-actions>
             </md-card-area>
           </md-card-media-cover>
