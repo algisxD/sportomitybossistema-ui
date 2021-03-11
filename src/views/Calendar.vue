@@ -2,9 +2,7 @@
   <div>
     <PageTitle v-bind:title="title" />
 
-    <div>
-      <v-btn elevation="2"></v-btn>
-    </div>
+    <div></div>
   </div>
 </template>
 

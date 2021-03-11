@@ -41,7 +41,6 @@
             <md-card-actions>
               <div>
                 <router-link
-                  v-on:click="sendSelectedRecipeInfo(recipe)"
                   :to="{
                     path: '/recipes/' + recipe.id,
                     params: { recipeInfo: recipe },

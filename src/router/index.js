@@ -9,6 +9,7 @@ import Register from "../views/Register.vue";
 import Login from "../views/Login.vue";
 import Sport from "../views/Sport.vue";
 import RecipesView from "../views/RecipePages/RecipesView.vue";
+import WorkOutsView from "../views/SportProgramPages/WorkOutsView.vue";
 import SportPlanning from "../views/SportPlanning.vue";
 import Calendar from "../views/Calendar.vue";
 
@@ -59,6 +60,11 @@ const routes = [
     path: "/sportplanning",
     name: "SportPlanning",
     component: SportPlanning,
+  },
+  {
+    path: "/workouts/:id",
+    name: "WorkOutsView",
+    component: WorkOutsView,
   },
   {
     path: "/register",

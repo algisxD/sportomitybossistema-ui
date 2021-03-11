@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="animation-area">
+    <div class="content">
       <ResponsiveNavigation
         :nav-links="navLinks"
         :image-path="require('./assets/logo.png')"
@@ -20,16 +20,19 @@
         leave-active-class="animate__animated animate__fadeOutLeft"
         ><router-view
       /></transition>
+      <Footer />
     </div>
   </div>
 </template>
 
 <script>
 import ResponsiveNavigation from "@/components/ResponsiveNavigation";
+import Footer from "@/components/Footer";
 
 export default {
   components: {
     ResponsiveNavigation,
+    Footer,
   },
   methods: {},
   data: () => ({
@@ -94,10 +97,5 @@ figure {
 }
 #nav {
   padding: 30px;
-}
-.footer-a {
-  width: 100%;
-  height: 75px;
-  background-color: blue;
 }
 </style>
