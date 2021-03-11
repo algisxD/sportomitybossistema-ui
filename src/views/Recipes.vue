@@ -72,7 +72,6 @@ import AddRecipeForm from "../components/RecipePage/AddRecipeForm";
 import PageTitle from "../components/PageTitle";
 import axios from "axios";
 import { mapGetters } from "vuex";
-import { eventBus } from "../main.js";
 
 export default {
   components: {
@@ -86,21 +85,12 @@ export default {
       title: "Receptai",
       recipes: [],
       result: "",
-      showModal: false,
     };
   },
   methods: {
-    displayModal() {
-      this.showModal = true;
-    },
     displayMoreRecipes() {
       this.recipesToDisplayNumber += 9;
     },
-  },
-  created() {
-    eventBus.$on("changeshowModal", (data) => {
-      this.showModal = data;
-    });
   },
   mounted() {
     axios.get("/receptas").then((response) => {

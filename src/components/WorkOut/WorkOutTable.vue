@@ -18,8 +18,22 @@
           <td style="width: 30%;">{{ exercise.aprasymas }}</td>
           <td>
             <b-button-group>
-              <b-button variant="outline-light">Ištrinti</b-button>
-              <b-button variant="outline-light">Redaguoti</b-button>
+              <b-button
+                @click="deleteExercise(exercise.id)"
+                variant="outline-light"
+                >Ištrinti</b-button
+              >
+              <b-button
+                @click="showEditExerciseDialog = true"
+                variant="outline-light"
+                >Redaguoti</b-button
+              >
+              <md-dialog :md-active.sync="showEditExerciseDialog">
+                <md-dialog-content class="md-scrollbar"
+                  ><EditExerciseForm
+                    v-on:closeDialog="showEditExerciseDialog = false"
+                /></md-dialog-content>
+              </md-dialog>
             </b-button-group>
           </td>
         </tr>
@@ -29,8 +43,29 @@
 </template>
 
 <script>
+import axios from "axios";
+import Vue from "vue";
+import EditExerciseForm from "../../components/ExercisePage/EditExerciseForm";
+
 export default {
+  components: {
+    EditExerciseForm,
+  },
+  data() {
+    return {
+      showEditExerciseDialog: false,
+    };
+  },
   props: ["exercises"],
+  methods: {
+    deleteExercise(id) {
+      axios.delete("pratimas/" + id).then(() => {
+        Vue.swal("", "Pratimas sėkmingai ištrintas", "success", function() {
+          this.$router.go();
+        });
+      });
+    },
+  },
 };
 </script>
 

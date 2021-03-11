@@ -8,7 +8,18 @@
         style="float: left; margin: 1%; margin-left: 3%"
       >
         <h3>Jūsų sporto programos</h3>
-        <b-button pill variant="danger">Sukurti naują sporto programą</b-button>
+        <b-button
+          @click="showCreateSportProgramDialog = true"
+          pill
+          variant="danger"
+          >Sukurti naują sporto programą</b-button
+        >
+        <md-dialog :md-active.sync="showCreateSportProgramDialog">
+          <md-dialog-content class="md-scrollbar"
+            ><AddSportProgramForm
+              v-on:closeDialog="showCreateSportProgramDialog = false"
+          /></md-dialog-content>
+        </md-dialog>
         <div>
           <table class="table table-hover table-dark table-margins">
             <thead>
@@ -47,8 +58,10 @@
                       "
                       >Deaktyvuoti</b-button
                     >
-                    <b-button variant="outline-light"
-                      >Pridėti treniruotę</b-button
+                    <b-button
+                      @click="deleteSportProgram(sportProgram.id)"
+                      variant="outline-light"
+                      >Ištrinti</b-button
                     >
                   </b-button-group>
                 </td>
@@ -63,9 +76,19 @@
         <h3>Jūsų treniruotės</h3>
 
         <div v-if="selectedProgram">
-          <b-button class="table-button" pill variant="danger"
+          <b-button
+            @click="showCreateWorkOutDialog = true"
+            class="table-button"
+            pill
+            variant="danger"
             >Sukurti naują treniruotę</b-button
           >
+          <md-dialog :md-active.sync="showCreateWorkOutDialog">
+            <md-dialog-content class="md-scrollbar"
+              ><AddWorkOutForm
+                v-on:closeDialog="showCreateWorkOutDialog = false"
+            /></md-dialog-content>
+          </md-dialog>
           <table class="table table-hover table-dark table-margins">
             <thead>
               <tr>
@@ -86,14 +109,21 @@
                 <td>{{ workout.treniruotesTipas }}</td>
                 <td>{{ workout.daromiPratimai.length }}</td>
                 <td>
-                  <router-link
-                    :to="{
-                      path: '/workouts/' + workout.id,
-                    }"
-                    ><b-button variant="outline-light"
-                      >Peržiūrėti</b-button
-                    ></router-link
-                  >
+                  <b-button-group>
+                    <router-link
+                      :to="{
+                        path: '/workouts/' + workout.id,
+                      }"
+                      ><b-button variant="outline-light"
+                        >Peržiūrėti</b-button
+                      ></router-link
+                    >
+                    <b-button
+                      @click="deleteWorkOut(workout.id)"
+                      variant="outline-light"
+                      >Ištrinti</b-button
+                    >
+                  </b-button-group>
                 </td>
               </tr>
             </tbody>
@@ -111,12 +141,18 @@ import PageTitle from "../components/PageTitle";
 import axios from "axios";
 import { mapGetters } from "vuex";
 import Vue from "vue";
+import AddSportProgramForm from "../components/SportProgramPage/AddSportProgramForm";
+import AddWorkOutForm from "../components/WorkOut/AddWorkOutForm";
 
 export default {
   components: {
     PageTitle,
+    AddSportProgramForm,
+    AddWorkOutForm,
   },
   data: () => ({
+    showCreateWorkOutDialog: false,
+    showCreateSportProgramDialog: false,
     title: "Sporto planavimas",
     sportPrograms: undefined,
     selectedSportProgram: undefined,
@@ -135,6 +171,25 @@ export default {
           "success"
         );
         this.$router.go();
+      });
+    },
+    deleteSportProgram(id) {
+      axios.delete("sportoprograma/" + id).then(() => {
+        Vue.swal(
+          "",
+          "Sporto programa sėkmingai ištrintas",
+          "success",
+          function() {
+            this.$router.go();
+          }
+        );
+      });
+    },
+    deleteWorkOut(id) {
+      axios.delete("treniruote/" + id).then(() => {
+        Vue.swal("", "Treniruotė sėkmingai ištrintas", "success", function() {
+          this.$router.go();
+        });
       });
     },
   },
