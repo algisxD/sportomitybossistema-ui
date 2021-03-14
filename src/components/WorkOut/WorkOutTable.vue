@@ -24,20 +24,23 @@
                 >Ištrinti</b-button
               >
               <b-button
-                @click="showEditExerciseDialog = true"
+                @click="
+                  (showEditExerciseDialog = true), (selectedExercise = exercise)
+                "
                 variant="outline-light"
                 >Redaguoti</b-button
               >
-              <md-dialog :md-active.sync="showEditExerciseDialog">
-                <md-dialog-content class="md-scrollbar"
-                  ><EditExerciseForm
-                    v-on:closeDialog="showEditExerciseDialog = false"
-                /></md-dialog-content>
-              </md-dialog>
             </b-button-group>
           </td>
         </tr>
       </tbody>
+      <md-dialog :md-active.sync="showEditExerciseDialog">
+        <md-dialog-content class="md-scrollbar"
+          ><EditExerciseForm
+            v-bind:exercise="selectedExercise"
+            v-on:closeDialog="showEditExerciseDialog = false"
+        /></md-dialog-content>
+      </md-dialog>
     </table>
   </div>
 </template>
@@ -55,6 +58,7 @@ export default {
   data() {
     return {
       showEditExerciseDialog: false,
+      selectedExercise: undefined,
     };
   },
   props: ["exercises"],

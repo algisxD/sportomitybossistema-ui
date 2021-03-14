@@ -63,10 +63,25 @@
                       variant="outline-light"
                       >Ištrinti</b-button
                     >
+                    <b-button
+                      @click="
+                        (showEditSportProgramDialog = true),
+                          (selectedSportProgramForUpdate = sportProgram)
+                      "
+                      variant="outline-light"
+                      >Redaguoti</b-button
+                    >
                   </b-button-group>
                 </td>
               </tr>
             </tbody>
+            <md-dialog :md-active.sync="showEditSportProgramDialog">
+              <md-dialog-content class="md-scrollbar"
+                ><EditSportProgramForm
+                  v-bind:sportProgram="selectedSportProgramForUpdate"
+                  v-on:closeDialog="showEditSportProgramDialog = false"
+              /></md-dialog-content>
+            </md-dialog>
           </table>
         </div>
         <br />
@@ -124,10 +139,25 @@
                       variant="outline-light"
                       >Ištrinti</b-button
                     >
+                    <b-button
+                      @click="
+                        (showEditWorkOutDialog = true),
+                          (selectedWorkOutForUpdate = workout)
+                      "
+                      variant="outline-light"
+                      >Redaguoti</b-button
+                    >
                   </b-button-group>
                 </td>
               </tr>
             </tbody>
+            <md-dialog :md-active.sync="showEditWorkOutDialog">
+              <md-dialog-content class="md-scrollbar"
+                ><EditWorkOutForm
+                  v-bind:workOut="selectedWorkOutForUpdate"
+                  v-on:closeDialog="showEditWorkOutDialog = false"
+              /></md-dialog-content>
+            </md-dialog>
           </table>
         </div>
         <div v-else><h4 class="text-red-700">Pasirinkite programa.</h4></div>
@@ -143,6 +173,8 @@ import axios from "axios";
 import { mapGetters } from "vuex";
 import Vue from "vue";
 import AddSportProgramForm from "../components/SportProgramPage/AddSportProgramForm";
+import EditSportProgramForm from "../components/SportProgramPage/EditSportProgramForm";
+import EditWorkOutForm from "../components/WorkOut/EditWorkOutForm";
 import AddWorkOutForm from "../components/WorkOut/AddWorkOutForm";
 import { eventBus } from "../main.js";
 
@@ -151,13 +183,19 @@ export default {
     PageTitle,
     AddSportProgramForm,
     AddWorkOutForm,
+    EditSportProgramForm,
+    EditWorkOutForm,
   },
   data: () => ({
+    showEditSportProgramDialog: false,
+    showEditWorkOutDialog: false,
     showCreateWorkOutDialog: false,
     showCreateSportProgramDialog: false,
     title: "Sporto planavimas",
     sportPrograms: undefined,
     selectedSportProgram: undefined,
+    selectedSportProgramForUpdate: undefined,
+    selectedWorkOutForUpdate: undefined,
   }),
   methods: {
     async displaySelectedSportProgram(id) {

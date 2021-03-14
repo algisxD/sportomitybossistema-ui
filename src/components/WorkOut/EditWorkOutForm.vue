@@ -69,7 +69,7 @@
             type="submit"
             class="md-primary md-raised"
             :disabled="sending"
-            >Sukurti</md-button
+            >Redaguoti</md-button
           >
         </md-card-actions>
       </md-card>
@@ -88,7 +88,7 @@ import { eventBus } from "../../main.js";
 export default {
   name: "FormValidation",
   mixins: [validationMixin],
-  props: ["sportProgramId"],
+  props: ["workOut"],
   data: () => ({
     showDialog: false,
     form: {
@@ -96,7 +96,8 @@ export default {
       dayOfTheWeek: undefined,
       type: undefined,
     },
-    workout: {
+    workOutForUpdate: {
+      id: undefined,
       pavadinimas: undefined,
       sukurimoData: undefined,
       savaitesDiena: undefined,
@@ -118,20 +119,12 @@ export default {
       },
     },
   },
+  created() {
+    this.form.name = this.workOut.pavadinimas;
+    this.form.dayOfTheWeek = this.workOut.savaitesDiena;
+    this.form.type = this.workOut.treniruotesTipas;
+  },
   methods: {
-    getNow() {
-      const today = new Date();
-      const date =
-        today.getFullYear() +
-        "-" +
-        (today.getMonth() + 1) +
-        "-" +
-        today.getDate();
-      const time =
-        today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-      const dateTime = date + "T" + time + "Z";
-      return dateTime;
-    },
     getValidationClass(fieldName) {
       const field = this.$v.form[fieldName];
       if (field) {
@@ -146,18 +139,20 @@ export default {
     async createNewWorkOut() {
       this.sending = true;
 
-      this.workout.pavadinimas = this.form.name;
-      this.workout.sukurimoData = this.getNow();
-      this.workout.savaitesDiena = this.form.dayOfTheWeek;
-      this.workout.treniruotesTipas = this.form.type;
-      this.workout.sportoProgramaId = this.sportProgramId;
+      this.workOutForUpdate.id = this.workOut.id;
+      this.workOutForUpdate.pavadinimas = this.form.name;
+      this.workOutForUpdate.sukurimoData = this.workOut.sukurimoData;
+      this.workOutForUpdate.savaitesDiena = this.form.dayOfTheWeek;
+      this.workOutForUpdate.treniruotesTipas = this.form.type;
+      this.workOutForUpdate.sportoProgramaId = this.workOut.sportoProgramaId;
+      console.log(this.workOutForUpdate);
 
       await axios
-        .post("treniruote", this.workout)
+        .put("treniruote/" + this.workOutForUpdate.id, this.workOutForUpdate)
         .then(() => {
-          Vue.swal("", "Pratimas sėkmingai sukurtas", "success");
+          Vue.swal("", "Treniruotė sėkmingai atnaujinta", "success");
           this.$emit("closeDialog");
-          eventBus.$emit("updateWorkOutTable", this.sportProgramId);
+          eventBus.$emit("updateWorkOutTable", this.workOut.sportoProgramaId);
         })
         .catch((error) => {
           if (error.response.status === 400) {
