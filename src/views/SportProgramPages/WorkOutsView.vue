@@ -18,7 +18,9 @@
         >
         <md-dialog :md-active.sync="showCreateDialog">
           <md-dialog-content class="md-scrollbar"
-            ><AddExerciseForm v-on:closeDialog="showCreateDialog = false"
+            ><AddExerciseForm
+              v-bind:workOutId="workOut.id"
+              v-on:closeDialog="showCreateDialog = false"
           /></md-dialog-content>
         </md-dialog>
         <WorkOutTable v-bind:exercises="workOut.daromiPratimai" />
@@ -46,6 +48,7 @@ export default {
       workOut: undefined,
       title: "Treniruotė",
       id: this.$route.params.id,
+      workOutId: undefined,
     };
   },
   methods: {},
@@ -59,8 +62,8 @@ export default {
 
 <style scoped>
 .table-button {
-  height: 30px;
-  width: 100px;
+  height: 50px;
+  width: 150px;
   margin-bottom: 30px;
 }
 </style>

@@ -86,6 +86,7 @@
           <md-dialog :md-active.sync="showCreateWorkOutDialog">
             <md-dialog-content class="md-scrollbar"
               ><AddWorkOutForm
+                v-bind:sportProgramId="selectedSportProgram.id"
                 v-on:closeDialog="showCreateWorkOutDialog = false"
             /></md-dialog-content>
           </md-dialog>

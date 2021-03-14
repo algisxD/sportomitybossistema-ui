@@ -109,9 +109,9 @@ export default {
     ...mapActions({
       signIn: "auth/signIn",
     }),
-    login() {
+    async login() {
       this.sending = true;
-      this.signIn(this.form)
+      await this.signIn(this.form)
         .then(() => {
           this.$router.replace({
             name: "Home",
