@@ -35,6 +35,7 @@ import PageTitle from "../../components/PageTitle";
 import WorkOutTable from "../../components/WorkOut/WorkOutTable";
 import AddExerciseForm from "../../components/ExercisePage/AddExerciseForm";
 import axios from "axios";
+import { eventBus } from "../../main.js";
 
 export default {
   components: {
@@ -51,10 +52,21 @@ export default {
       workOutId: undefined,
     };
   },
-  methods: {},
+  methods: {
+    updateTable() {
+      axios.get("treniruote/" + this.id).then((response) => {
+        this.workOut = response.data;
+      });
+    },
+  },
   created() {
     axios.get("treniruote/" + this.id).then((response) => {
       this.workOut = response.data;
+    });
+    eventBus.$on("updateExerciseTable", () => {
+      axios.get("treniruote/" + this.id).then((response) => {
+        this.workOut = response.data;
+      });
     });
   },
 };

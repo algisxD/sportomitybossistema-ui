@@ -46,6 +46,7 @@
 import axios from "axios";
 import Vue from "vue";
 import EditExerciseForm from "../../components/ExercisePage/EditExerciseForm";
+import { eventBus } from "../../main.js";
 
 export default {
   components: {
@@ -58,11 +59,10 @@ export default {
   },
   props: ["exercises"],
   methods: {
-    deleteExercise(id) {
-      axios.delete("pratimas/" + id).then(() => {
-        Vue.swal("", "Pratimas sėkmingai ištrintas", "success", function() {
-          this.$router.go();
-        });
+    async deleteExercise(id) {
+      await axios.delete("pratimas/" + id).then(() => {
+        Vue.swal("", "Pratimas sėkmingai ištrintas", "success");
+        eventBus.$emit("updateExerciseTable");
       });
     },
   },

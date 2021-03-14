@@ -38,7 +38,7 @@
                 <td>
                   <b-button-group>
                     <b-button
-                      @click="displaySelectedSportProgram(sportProgram)"
+                      @click="displaySelectedSportProgram(sportProgram.id)"
                       variant="outline-light"
                       >Pasirinkti</b-button
                     >
@@ -144,6 +144,7 @@ import { mapGetters } from "vuex";
 import Vue from "vue";
 import AddSportProgramForm from "../components/SportProgramPage/AddSportProgramForm";
 import AddWorkOutForm from "../components/WorkOut/AddWorkOutForm";
+import { eventBus } from "../main.js";
 
 export default {
   components: {
@@ -159,45 +160,47 @@ export default {
     selectedSportProgram: undefined,
   }),
   methods: {
-    displaySelectedSportProgram(item) {
-      this.selectedSportProgram = item;
+    async displaySelectedSportProgram(id) {
+      axios.get("sportoprograma/" + id).then((response) => {
+        this.selectedSportProgram = response.data;
+      });
     },
-    changeSportProgramStatus(id, data) {
+    async changeSportProgramStatus(id, data) {
       Vue.delete(data, "treniruotes");
       data.arAktyvi = !data.arAktyvi;
-      axios.put("SportoPrograma/" + id, data).then(() => {
+      await axios.put("SportoPrograma/" + id, data).then(() => {
         Vue.swal(
-          "Sekmė!",
+          "",
           "Sėkmingai pakeistas sporto programos statusas",
           "success"
         );
-        this.$router.go();
+        eventBus.$emit("updateSportProgramTable");
       });
     },
-    deleteSportProgram(id) {
-      axios.delete("sportoprograma/" + id).then(() => {
-        Vue.swal(
-          "",
-          "Sporto programa sėkmingai ištrintas",
-          "success",
-          function() {
-            this.$router.go();
-          }
-        );
+    async deleteSportProgram(id) {
+      await axios.delete("sportoPrograma/" + id).then(() => {
+        Vue.swal("", "Sporto programa sėkmingai ištrinta", "success");
+        eventBus.$emit("updateSportProgramTable");
       });
     },
-    deleteWorkOut(id) {
-      axios.delete("treniruote/" + id).then(() => {
-        Vue.swal("", "Treniruotė sėkmingai ištrintas", "success", function() {
-          this.$router.go();
-        });
+    async deleteWorkOut(id) {
+      await axios.delete("treniruote/" + id).then(() => {
+        Vue.swal("", "Treniruotė sėkmingai ištrinta", "success");
+        eventBus.$emit("updateWorkOutTable", this.selectedSportProgram.id);
       });
     },
   },
-  mounted() {
+  created() {
     axios.get("SportoPrograma/user/" + this.userId).then((response) => {
       this.sportPrograms = response.data;
-      console.warn(response.data);
+    });
+    eventBus.$on("updateSportProgramTable", () => {
+      axios.get("SportoPrograma/user/" + this.userId).then((response) => {
+        this.sportPrograms = response.data;
+      });
+    });
+    eventBus.$on("updateWorkOutTable", (id) => {
+      this.displaySelectedSportProgram(id);
     });
   },
   computed: {

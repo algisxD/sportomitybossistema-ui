@@ -44,6 +44,7 @@ import { required } from "vuelidate/lib/validators";
 import { mapGetters } from "vuex";
 import axios from "axios";
 import Vue from "vue";
+import { eventBus } from "../../main.js";
 
 export default {
   name: "FormValidation",
@@ -106,6 +107,7 @@ export default {
         .then(() => {
           Vue.swal("", "Sporto programa sėkmingai sukurta", "success");
           this.$emit("closeDialog");
+          eventBus.$emit("updateSportProgramTable");
         })
         .catch((error) => {
           if (error.response.status === 400) {
