@@ -160,7 +160,9 @@
             </md-dialog>
           </table>
         </div>
-        <div v-else><h4 class="text-red-700">Pasirinkite programa.</h4></div>
+        <div v-else>
+          <h4 class="today-is-empty-text">Pasirinkite programa.</h4>
+        </div>
       </div>
     </div>
     <br /><br />
@@ -253,6 +255,14 @@ export default {
 </script>
 
 <style scoped>
+.today-is-empty-text {
+  font-family: "Ranchers", cursive;
+  color: hsla(200, 0%, 0%, 0.7);
+  margin-top: 100px;
+  margin-bottom: 100px;
+  text-align: center;
+  font-size: 50px;
+}
 .check-box {
   width: 20px;
   height: 20px;

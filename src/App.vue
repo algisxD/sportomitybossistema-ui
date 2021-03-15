@@ -77,6 +77,11 @@ export default {
         path: "/calendar",
         icon: "ion-ios-calendar",
       },
+      {
+        text: "Mano diena",
+        path: "/myday",
+        icon: "ion-md-today",
+      },
     ],
   }),
 };

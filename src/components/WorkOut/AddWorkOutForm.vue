@@ -100,8 +100,10 @@ export default {
       pavadinimas: undefined,
       sukurimoData: undefined,
       savaitesDiena: undefined,
+      savaitesDienosSkaitineReiksme: undefined,
       treniruotesTipas: undefined,
       sportoProgramaId: undefined,
+      vartotojasId: undefined,
     },
     sending: false,
   }),
@@ -132,6 +134,29 @@ export default {
       const dateTime = date + "T" + time + "Z";
       return dateTime;
     },
+    getDayOfTheWeekFromName(name) {
+      if (name == "Pirmadienis") {
+        return 1;
+      }
+      if (name == "Antradienis") {
+        return 2;
+      }
+      if (name == "Trečiadienis") {
+        return 3;
+      }
+      if (name == "Ketvirtadienis") {
+        return 4;
+      }
+      if (name == "Penktadienis") {
+        return 5;
+      }
+      if (name == "Šeštadienis") {
+        return 6;
+      }
+      if (name == "Sekmadienis") {
+        return 7;
+      }
+    },
     getValidationClass(fieldName) {
       const field = this.$v.form[fieldName];
       if (field) {
@@ -149,13 +174,17 @@ export default {
       this.workout.pavadinimas = this.form.name;
       this.workout.sukurimoData = this.getNow();
       this.workout.savaitesDiena = this.form.dayOfTheWeek;
+      this.workout.savaitesDienosSkaitineReiksme = this.getDayOfTheWeekFromName(
+        this.form.dayOfTheWeek
+      );
       this.workout.treniruotesTipas = this.form.type;
       this.workout.sportoProgramaId = this.sportProgramId;
+      this.workout.vartotojasId = this.userId;
 
       await axios
         .post("treniruote", this.workout)
         .then(() => {
-          Vue.swal("", "Pratimas sėkmingai sukurtas", "success");
+          Vue.swal("", "Treniruotė sėkmingai sukurta", "success");
           this.$emit("closeDialog");
           eventBus.$emit("updateWorkOutTable", this.sportProgramId);
         })

@@ -2,7 +2,7 @@
   <div>
     <PageTitle v-bind:title="title" />
 
-    <div class="row">
+    <div class="row row-container">
       <div
         class="col-lg-4"
         style="float: left; margin: 1%; margin-left: 3%; margin-right: 0; padding: 0px;"
@@ -86,3 +86,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.row-container {
+  margin-bottom: 30px;
+}
+</style>

@@ -12,6 +12,7 @@ import RecipesView from "../views/RecipePages/RecipesView.vue";
 import WorkOutsView from "../views/SportProgramPages/WorkOutsView.vue";
 import SportPlanning from "../views/SportPlanning.vue";
 import Calendar from "../views/Calendar.vue";
+import MyDay from "../views/MyDay.vue";
 
 Vue.use(VueRouter);
 
@@ -70,6 +71,11 @@ const routes = [
     path: "/register",
     name: "Register",
     component: Register,
+  },
+  {
+    path: "/myday",
+    name: "MyDay",
+    component: MyDay,
   },
   {
     path: "/login",

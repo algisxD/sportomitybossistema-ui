@@ -101,8 +101,10 @@ export default {
       pavadinimas: undefined,
       sukurimoData: undefined,
       savaitesDiena: undefined,
+      savaitesDienosSkaitineReiksme: undefined,
       treniruotesTipas: undefined,
       sportoProgramaId: undefined,
+      vartotojasId: undefined,
     },
     sending: false,
   }),
@@ -136,6 +138,29 @@ export default {
     clearForm() {
       this.$v.$reset();
     },
+    getDayOfTheWeekFromName(name) {
+      if (name == "Pirmadienis") {
+        return 1;
+      }
+      if (name == "Antradienis") {
+        return 2;
+      }
+      if (name == "Trečiadienis") {
+        return 3;
+      }
+      if (name == "Ketvirtadienis") {
+        return 4;
+      }
+      if (name == "Penktadienis") {
+        return 5;
+      }
+      if (name == "Šeštadienis") {
+        return 6;
+      }
+      if (name == "Sekmadienis") {
+        return 7;
+      }
+    },
     async createNewWorkOut() {
       this.sending = true;
 
@@ -143,8 +168,12 @@ export default {
       this.workOutForUpdate.pavadinimas = this.form.name;
       this.workOutForUpdate.sukurimoData = this.workOut.sukurimoData;
       this.workOutForUpdate.savaitesDiena = this.form.dayOfTheWeek;
+      this.workOutForUpdate.savaitesDienosSkaitineReiksme = this.getDayOfTheWeekFromName(
+        this.form.dayOfTheWeek
+      );
       this.workOutForUpdate.treniruotesTipas = this.form.type;
       this.workOutForUpdate.sportoProgramaId = this.workOut.sportoProgramaId;
+      this.workOutForUpdate.vartotojasId = this.userId;
       console.log(this.workOutForUpdate);
 
       await axios
