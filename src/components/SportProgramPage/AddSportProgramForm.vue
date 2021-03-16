@@ -87,8 +87,26 @@ export default {
         (today.getMonth() + 1) +
         "-" +
         today.getDate();
-      const time =
-        today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      let time = undefined;
+
+      if (today.getHours() > 9) {
+        time = today.getHours() + ":";
+      } else {
+        time = "0" + today.getHours() + ":";
+      }
+
+      if (today.getMinutes() > 9) {
+        time = time + today.getMinutes() + ":";
+      } else {
+        time = time + "0" + today.getMinutes() + ":";
+      }
+
+      if (today.getSeconds() > 9) {
+        time = time + today.getSeconds();
+      } else {
+        time = time + "0" + today.getSeconds();
+      }
+
       const dateTime = date + "T" + time + "Z";
       return dateTime;
     },
