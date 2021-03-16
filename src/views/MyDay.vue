@@ -15,6 +15,14 @@
             :key="index"
           >
             <h4>Treniruotės pavadinimas: {{ workOut.pavadinimas }}</h4>
+            <router-link
+              :to="{
+                path: '/workouts/' + workOut.id,
+              }"
+              ><b-button pill variant="primary" style="margin-bottom: 15px;"
+                >Eiti į treniruotės puslapį</b-button
+              ></router-link
+            >
             <WorkOutTable v-bind:exercises="workOut.daromiPratimai" />
           </div>
         </div>
