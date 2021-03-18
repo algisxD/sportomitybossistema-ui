@@ -48,19 +48,9 @@ export default {
         icon: "ion-ios-search",
       },
       {
-        text: "Kalorijų skaičiuoklė",
-        path: "/kcal",
-        icon: "ion-ios-megaphone",
-      },
-      {
         text: "KMI skaičiuoklė",
         path: "/kmi",
         icon: "ion-ios-calculator",
-      },
-      {
-        text: "Mitybos planų parinkimas",
-        path: "/diet",
-        icon: "ion-ios-train",
       },
       {
         text: "Receptai",
@@ -68,14 +58,14 @@ export default {
         icon: "ion-ios-book",
       },
       {
-        text: "Sportas",
-        path: "/sport",
-        icon: "ion-ios-american-football",
+        text: "Mitybos planavimas",
+        path: "/diet",
+        icon: "ion-ios-megaphone",
       },
       {
-        text: "Kalendorius",
-        path: "/calendar",
-        icon: "ion-ios-calendar",
+        text: "Sporto planavimas",
+        path: "/sportplanning",
+        icon: "ion-ios-american-football",
       },
       {
         text: "Mano diena",

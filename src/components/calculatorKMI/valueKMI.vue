@@ -20,7 +20,7 @@
           </p>
           <p v-else class="text-green-400 font-bold">Normalus svoris</p>
         </div>
-        <div style="margin-top: 100px; width: 780px;">
+        <div style="margin-top: 100px; margin-left:75px; width: 780px;">
           <backButton />
         </div>
       </div>

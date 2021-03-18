@@ -10,7 +10,12 @@
       >
         Pridėti receptą
       </b-button>
-
+      <div class="filter-container shadow-border">
+        <md-field class="filter-input-container ">
+          <label>Filtravimas</label>
+          <md-input v-model="filterText"></md-input>
+        </md-field>
+      </div>
       <md-dialog :md-active.sync="showDialog">
         <md-dialog-content class="md-scrollbar"
           ><AddRecipeForm v-on:closeDialog="showDialog = false"
@@ -34,7 +39,9 @@
 
           <md-card-header>
             <div class="md-title">{{ recipe.pavadinimas }}</div>
-            <div class="md-subhead">Sukūrė: {{ recipe.vartotojas.vardas }}</div>
+            <div class="md-subhead">
+              Sukūrė: {{ recipe.receptoAutorius.vardas }}
+            </div>
           </md-card-header>
 
           <md-card-expand>
@@ -43,7 +50,6 @@
                 <router-link
                   :to="{
                     path: '/recipes/' + recipe.id,
-                    params: { recipeInfo: recipe },
                   }"
                   ><md-button>Peržiūrėti</md-button></router-link
                 >
@@ -85,6 +91,7 @@ export default {
       title: "Receptai",
       recipes: [],
       result: "",
+      filterText: undefined,
     };
   },
   methods: {
@@ -93,7 +100,7 @@ export default {
     },
   },
   mounted() {
-    axios.get("/receptas").then((response) => {
+    axios.get("/receptas/public").then((response) => {
       this.recipes = response.data;
       console.log(response.data);
     });
@@ -105,6 +112,15 @@ export default {
     }),
     limitedRecipes() {
       return this.recipes.slice(0, this.recipesToDisplayNumber);
+    },
+    filterRecipes() {
+      return this.recipes.filter((item) => {
+        return (
+          item.pavadinimas
+            .toLowerCase()
+            .indexOf(this.filterText.toLowerCase()) > -1
+        );
+      });
     },
   },
 };
@@ -190,5 +206,18 @@ export default {
 }
 .md-dialog {
   z-index: 9;
+}
+.filter-container {
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  background-color: #dcebeb;
+  border-radius: 25px;
+}
+.filter-input-container {
+  width: 90%;
+  margin: auto;
+  margin-bottom: 20px;
+  margin-top: 10px;
 }
 </style>

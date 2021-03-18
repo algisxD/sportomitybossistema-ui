@@ -20,7 +20,7 @@
               v-on:closeDialog="showCreateSportProgramDialog = false"
           /></md-dialog-content>
         </md-dialog>
-        <div>
+        <div v-if="sportPrograms.length >= 1">
           <table class="table table-hover table-dark table-margins">
             <thead>
               <tr>
@@ -84,6 +84,9 @@
             </md-dialog>
           </table>
         </div>
+        <div v-else class="today-is-empty-text">
+          Kolkas sporto programų neturi.
+        </div>
         <br />
       </div>
 
@@ -105,60 +108,65 @@
                 v-on:closeDialog="showCreateWorkOutDialog = false"
             /></md-dialog-content>
           </md-dialog>
-          <table class="table table-hover table-dark table-margins">
-            <thead>
-              <tr>
-                <th scope="col">Pavadinimas</th>
-                <th scope="col">Savaitės diena</th>
-                <th scope="col">Treniruotės tipas</th>
-                <th scope="col">Pratimų skaičius</th>
-                <th scope="col">Veiksmai</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="(workout, index) in selectedProgram.treniruotes"
-                :key="index"
-              >
-                <td>{{ workout.pavadinimas }}</td>
-                <td>{{ workout.savaitesDiena }}</td>
-                <td>{{ workout.treniruotesTipas }}</td>
-                <td>{{ workout.daromiPratimai.length }}</td>
-                <td>
-                  <b-button-group>
-                    <router-link
-                      :to="{
-                        path: '/workouts/' + workout.id,
-                      }"
-                      ><b-button variant="outline-light"
-                        >Peržiūrėti</b-button
-                      ></router-link
-                    >
-                    <b-button
-                      @click="deleteWorkOut(workout.id)"
-                      variant="outline-light"
-                      >Ištrinti</b-button
-                    >
-                    <b-button
-                      @click="
-                        (showEditWorkOutDialog = true),
-                          (selectedWorkOutForUpdate = workout)
-                      "
-                      variant="outline-light"
-                      >Redaguoti</b-button
-                    >
-                  </b-button-group>
-                </td>
-              </tr>
-            </tbody>
-            <md-dialog :md-active.sync="showEditWorkOutDialog">
-              <md-dialog-content class="md-scrollbar"
-                ><EditWorkOutForm
-                  v-bind:workOut="selectedWorkOutForUpdate"
-                  v-on:closeDialog="showEditWorkOutDialog = false"
-              /></md-dialog-content>
-            </md-dialog>
-          </table>
+          <div v-if="selectedProgram.treniruotes.length >= 1">
+            <table class="table table-hover table-dark table-margins">
+              <thead>
+                <tr>
+                  <th scope="col">Pavadinimas</th>
+                  <th scope="col">Savaitės diena</th>
+                  <th scope="col">Treniruotės tipas</th>
+                  <th scope="col">Pratimų skaičius</th>
+                  <th scope="col">Veiksmai</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="(workout, index) in selectedProgram.treniruotes"
+                  :key="index"
+                >
+                  <td>{{ workout.pavadinimas }}</td>
+                  <td>{{ workout.savaitesDiena }}</td>
+                  <td>{{ workout.treniruotesTipas }}</td>
+                  <td>{{ workout.daromiPratimai.length }}</td>
+                  <td>
+                    <b-button-group>
+                      <router-link
+                        :to="{
+                          path: '/workouts/' + workout.id,
+                        }"
+                        ><b-button variant="outline-light"
+                          >Peržiūrėti</b-button
+                        ></router-link
+                      >
+                      <b-button
+                        @click="deleteWorkOut(workout.id)"
+                        variant="outline-light"
+                        >Ištrinti</b-button
+                      >
+                      <b-button
+                        @click="
+                          (showEditWorkOutDialog = true),
+                            (selectedWorkOutForUpdate = workout)
+                        "
+                        variant="outline-light"
+                        >Redaguoti</b-button
+                      >
+                    </b-button-group>
+                  </td>
+                </tr>
+              </tbody>
+              <md-dialog :md-active.sync="showEditWorkOutDialog">
+                <md-dialog-content class="md-scrollbar"
+                  ><EditWorkOutForm
+                    v-bind:workOut="selectedWorkOutForUpdate"
+                    v-on:closeDialog="showEditWorkOutDialog = false"
+                /></md-dialog-content>
+              </md-dialog>
+            </table>
+          </div>
+          <div v-else class="today-is-empty-text">
+            Kolkas treniruočių neturite
+          </div>
         </div>
         <div v-else>
           <h4 class="today-is-empty-text">Pasirinkite programa.</h4>

@@ -9,8 +9,8 @@
       >
         <h3>KMI skaičiuoklė</h3>
         <form @submit="checkForm">
-          <div class="row" v-if="!isCalculated" style="height: 400px">
-            <div class="col">
+          <div class="row" v-if="!isCalculated" style="height: 400px;">
+            <div class="col-lg-12">
               <fieldset>
                 <legend style="margin-bottom: 30px;">
                   Įveskite savo duomenis:
@@ -63,19 +63,17 @@
                       </div>
                     </div>
                   </div>
-                  <div>
-                    <button
-                      v-on:click="countBMI(height, weight)"
-                      type="submit"
-                      class="btn btn-primary"
-                      :disabled="!isComplete"
-                      style="margin-top: 50px"
-                    >
-                      Skaičiuoti
-                    </button>
-                  </div>
+                  <div></div>
                 </div>
               </fieldset>
+              <button
+                v-on:click="countBMI(height, weight)"
+                class="btn btn-primary"
+                :disabled="!isComplete"
+                style="margin-top: 75px; float: right;"
+              >
+                Skaičiuoti
+              </button>
             </div>
             <div class="col">
               <errorListKMI v-bind:errors="errors" />
@@ -186,9 +184,10 @@ h1:after {
 }
 form {
   height: 400px;
-  width: 800px;
+  width: 870px;
   outline-color: #333;
   margin-left: 0;
+  margin-right: 0;
   padding: 0;
 }
 .zoom {
