@@ -31,7 +31,13 @@
 
       <div class="col-lg-5 cardBackground zoom" style="float: left; margin: 1%">
         <h3>Šiandienos valgiaraštis</h3>
-        <div v-if="workOuts.length > 0"></div>
+        <div v-if="foodMenu.length > 0">
+          <div v-for="(menu, index) in foodMenu"
+            :key="index">
+<UsersRecipeTable v-bind:selectedFoodMenu="menu" />
+          </div>
+          
+        </div>
         <div v-else class="today-is-empty-text">
           Šiandienos valgiaraštis tuščias
         </div>
@@ -46,37 +52,37 @@ import PageTitle from "../components/PageTitle";
 import { mapGetters } from "vuex";
 import axios from "axios";
 import WorkOutTable from "../components/WorkOut/WorkOutTable";
+import UsersRecipeTable from "../components/RecipePage/UsersRecipeTable";
 
 export default {
   components: {
     PageTitle,
     WorkOutTable,
+    UsersRecipeTable,
   },
   data() {
     return {
       workOuts: undefined,
+      foodMenu: undefined,
       dayOfTheWeek: undefined,
-      isCalculated: false,
       title: "Mano diena",
     };
   },
-  methods: {
-    updateIsCalculated() {
-      this.isCalculated = false;
-      if (this.errors.length > 0) this.errors.length = 0;
-    },
-  },
+  methods: {},
   created() {
     let today = new Date();
     this.dayOfTheWeek = today.getDay();
-    console.log(this.dayOfTheWeek);
   },
   mounted() {
     axios
       .get("treniruote/user/" + this.userId + "/" + this.dayOfTheWeek)
       .then((response) => {
         this.workOuts = response.data;
-        console.log(this.workOuts);
+      });
+    axios
+      .get("valgiarastis/user/" + this.userId + "/" + this.dayOfTheWeek)
+      .then((response) => {
+        this.foodMenu = response.data;
       });
   },
   computed: {

@@ -9,7 +9,14 @@
         Gaminimo laikas: {{ recipe.gaminimoLaikas }} min.
         <i :class="'ion-md-clock'" />
       </h5>
-      <h5></h5>
+      <b-button
+        v-if="recipe.receptoAutorius.id == userId"
+        variant="light"
+        style="margin-right: 5px;"
+        @click="deleteRecipe(recipe.id)"
+        >Ištrinti</b-button
+      >
+      <b-button variant="light">Pridėti prie savo valgiaraščio</b-button>
       <div class="image">
         <img
           :src="require('../../assets/uploads/' + recipe.nuotrauka)"
@@ -42,8 +49,25 @@
 </template>
 
 <script>
+import axios from "axios";
+import { mapGetters } from "vuex";
+import Vue from "vue";
+
 export default {
   props: ["recipe"],
+  methods: {
+    async deleteRecipe(id) {
+      await axios.delete("receptas/" + id).then(() => {
+        Vue.swal("", "Receptas sėkmingai ištrintas", "success");
+        this.$router.go(-1);
+      });
+    },
+  },
+  computed: {
+    ...mapGetters({
+      userId: "auth/userId",
+    }),
+  },
 };
 </script>
 

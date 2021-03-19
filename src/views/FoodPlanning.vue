@@ -17,7 +17,7 @@
               v-on:closeDialog="showCreateFoodMenuDialog = false"
           /></md-dialog-content>
         </md-dialog>
-        <div>
+        <div v-if="foodMenus">
           <table class="table table-hover table-dark table-margins">
             <thead>
               <tr>
@@ -79,6 +79,9 @@
             </md-dialog>
           </table>
         </div>
+        <div v-else>
+
+        </div>
         <br />
       </div>
 
@@ -98,48 +101,9 @@
               ><AddRecipeForm v-on:closeDialog="showCreateRecipeDialog = false"
             /></md-dialog-content>
           </md-dialog>
-          <div v-if="selectedFoodMenu.valgiarastisReceptas.length >= 1">
-            <table class="table table-hover table-dark table-margins">
-              <thead>
-                <tr>
-                  <th scope="col">Pavadinimas</th>
-                  <th scope="col">Gaminimo laikas</th>
-                  <th scope="col">Porcijų skaičius</th>
-                  <th scope="col">Ingredientų skaičius</th>
-                  <th scope="col">Veiksmai</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="(menu, index) in selectedFoodMenu.valgiarastisReceptas"
-                  :key="index"
-                >
-                  <td>{{ menu.receptas.pavadinimas }}</td>
-                  <td>{{ menu.receptas.gaminimoLaikas }}</td>
-                  <td>{{ menu.receptas.porcijuSkaicius }}</td>
-                  <td>{{ menu.receptas.ingridientai.length }}</td>
-                  <td>
-                    <b-button-group>
-                      <router-link
-                        :to="{
-                          path: '/recipes/' + menu.receptas.id,
-                        }"
-                        ><b-button variant="outline-light"
-                          >Peržiūrėti</b-button
-                        ></router-link
-                      >
-                      <b-button
-                        @click="deleteRecipe(menu.id)"
-                        variant="outline-light"
-                        >Ištrinti</b-button
-                      >
-                    </b-button-group>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="table-margins">
+            <UsersRecipeTable v-bind:selectedFoodMenu="selectedFoodMenu" />
           </div>
-          <div v-else class="today-is-empty-text">Kolkas receptų neturite.</div>
         </div>
         <div v-else>
           <h4 class="today-is-empty-text">Pasirinkite Valgiaraštį.</h4>
@@ -158,6 +122,7 @@ import Vue from "vue";
 import AddFoodMenuForm from "../components/FoodMenuPage/AddFoodMenuForm";
 import EditFoodMenuForm from "../components/FoodMenuPage/EditFoodMenuForm";
 import AddRecipeForm from "../components/RecipePage/AddRecipeForm";
+import UsersRecipeTable from "../components/RecipePage/UsersRecipeTable";
 import { eventBus } from "../main.js";
 
 export default {
@@ -166,6 +131,7 @@ export default {
     AddFoodMenuForm,
     AddRecipeForm,
     EditFoodMenuForm,
+    UsersRecipeTable,
   },
   data: () => ({
     showEditFoodMenuDialog: false,
