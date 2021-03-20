@@ -16,7 +16,16 @@
         @click="deleteRecipe(recipe.id)"
         >Ištrinti</b-button
       >
-      <b-button variant="light">Pridėti prie savo valgiaraščio</b-button>
+      <b-button variant="light" @click="showAddRecipeToMenuDialog = true"
+        >Pridėti prie savo valgiaraščio</b-button
+      >
+      <md-dialog :md-active.sync="showAddRecipeToMenuDialog">
+        <md-dialog-content class="md-scrollbar"
+          ><AddRecipeToFoodMenuForm
+            v-bind:recipeId="recipe.id"
+            v-on:closeDialog="showAddRecipeToMenuDialog = false"
+        /></md-dialog-content>
+      </md-dialog>
       <div class="image">
         <img
           :src="require('../../assets/uploads/' + recipe.nuotrauka)"
@@ -52,8 +61,15 @@
 import axios from "axios";
 import { mapGetters } from "vuex";
 import Vue from "vue";
+import AddRecipeToFoodMenuForm from "./AddRecipeToFoodMenuForm";
 
 export default {
+  components: {
+    AddRecipeToFoodMenuForm,
+  },
+  data: () => ({
+    showAddRecipeToMenuDialog: false,
+  }),
   props: ["recipe"],
   methods: {
     async deleteRecipe(id) {
@@ -98,5 +114,8 @@ img {
   margin-right: auto;
   height: 70%;
   width: 70%;
+}
+.md-dialog {
+  z-index: 9;
 }
 </style>

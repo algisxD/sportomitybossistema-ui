@@ -11,7 +11,7 @@
         Pridėti receptą
       </b-button>
       <div class="filter-container shadow-border">
-        <md-field class="filter-input-container ">
+        <md-field class="filter-input-container">
           <label>Filtravimas</label>
           <md-input v-model="filterText"></md-input>
         </md-field>
@@ -25,7 +25,7 @@
     <div class="row offset-md-1 col-lg-10">
       <div
         class="col-lg-4"
-        v-for="(recipe, index) in limitedRecipes"
+        v-for="(recipe, index) in filterRecipes"
         :key="index"
       >
         <md-card md-with-hover class="cards shadow-border">
@@ -114,13 +114,16 @@ export default {
       return this.recipes.slice(0, this.recipesToDisplayNumber);
     },
     filterRecipes() {
-      return this.recipes.filter((item) => {
-        return (
-          item.pavadinimas
-            .toLowerCase()
-            .indexOf(this.filterText.toLowerCase()) > -1
-        );
-      });
+      if (this.filterText) {
+        return this.limitedRecipes.filter((item) => {
+          return (
+            item.pavadinimas
+              .toLowerCase()
+              .indexOf(this.filterText.toLowerCase()) > -1
+          );
+        });
+      }
+      return this.limitedRecipes;
     },
   },
 };

@@ -11,7 +11,7 @@
       </figure>
       <template>
         <li
-          v-for="(link, index) in navLinks"
+          v-for="(link, index) in filteredNav"
           :key="index"
           @mouseenter="
             $event.currentTarget.style.background = hoverBackground || '#999'
@@ -110,6 +110,14 @@ export default {
       authenticated: "auth/authenticated",
       user: "auth/user",
     }),
+    filteredNav() {
+      if (this.authenticated) return this.navLinks;
+      else {
+        return this.navLinks.filter((item) => {
+          return item.needsAuthorization === false;
+        });
+      }
+    },
   },
 };
 </script>

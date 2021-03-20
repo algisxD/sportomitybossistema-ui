@@ -1,13 +1,12 @@
 <template>
   <div>
-    <div>
+    <div v-if="selectedFoodMenu.valgiarastisReceptas.length > 0">
       <table class="table table-hover table-dark table-margins">
         <thead>
           <tr>
             <th scope="col">Pavadinimas</th>
             <th scope="col">Gaminimo laikas</th>
             <th scope="col">Porcijų skaičius</th>
-            <th scope="col">Ingredientų skaičius</th>
             <th scope="col">Veiksmai</th>
           </tr>
         </thead>
@@ -19,7 +18,6 @@
             <td>{{ menu.receptas.pavadinimas }}</td>
             <td>{{ menu.receptas.gaminimoLaikas }}</td>
             <td>{{ menu.receptas.porcijuSkaicius }}</td>
-            <td>a</td>
             <td>
               <b-button-group>
                 <router-link
@@ -31,9 +29,9 @@
                   ></router-link
                 >
                 <b-button
-                  @click="deleteRecipe(menu.receptas.id)"
+                  @click="deleteRecipeFromFoodMenu(menu.id)"
                   variant="outline-light"
-                  >Ištrinti</b-button
+                  >Ištrinti iš valgiaraščio</b-button
                 >
               </b-button-group>
             </td>
@@ -41,7 +39,7 @@
         </tbody>
       </table>
     </div>
-    <div class="today-is-empty-text">Kolkas receptų neturite.</div>
+    <div v-else class="today-is-empty-text">Kolkas receptų neturite.</div>
   </div>
 </template>
 
@@ -56,9 +54,9 @@ export default {
   props: ["selectedFoodMenu"],
   data: () => ({}),
   methods: {
-    async deleteRecipe(id) {
-      await axios.delete("receptas/" + id).then(() => {
-        Vue.swal("", "Treniruotė sėkmingai ištrinta", "success");
+    async deleteRecipeFromFoodMenu(id) {
+      await axios.delete("ValgiarastisReceptas/" + id).then(() => {
+        Vue.swal("", "Receptas sėkmingai ištrintas iš valgiaraščio", "success");
         eventBus.$emit("updateRecipeTable", this.selectedFoodMenu.id);
       });
     },
@@ -70,3 +68,14 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.today-is-empty-text {
+  font-family: "Ranchers", cursive;
+  color: hsla(200, 0%, 0%, 0.7);
+  margin-top: 100px;
+  margin-bottom: 100px;
+  text-align: center;
+  font-size: 50px;
+}
+</style>

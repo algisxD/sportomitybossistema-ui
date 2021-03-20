@@ -79,8 +79,8 @@
             </md-dialog>
           </table>
         </div>
-        <div v-else>
-
+        <div v-else class="today-is-empty-text">
+          Kolkas valgiaraščių neturite.
         </div>
         <br />
       </div>
