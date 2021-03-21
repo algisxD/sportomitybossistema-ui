@@ -138,7 +138,7 @@ export default {
         return 6;
       }
       if (name == "Sekmadienis") {
-        return 7;
+        return 0;
       }
     },
     async createNewWorkOut() {

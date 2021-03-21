@@ -9,16 +9,35 @@
         Gaminimo laikas: {{ recipe.gaminimoLaikas }} min.
         <i :class="'ion-md-clock'" />
       </h5>
-      <b-button
-        v-if="recipe.receptoAutorius.id == userId"
-        variant="light"
-        style="margin-right: 5px;"
-        @click="deleteRecipe(recipe.id)"
-        >Ištrinti</b-button
-      >
-      <b-button variant="light" @click="showAddRecipeToMenuDialog = true"
-        >Pridėti prie savo valgiaraščio</b-button
-      >
+      <div class="actions-container">
+        <div class="actions-inner-container">
+          <b-button
+            class="button-container"
+            v-if="recipe.receptoAutorius.id == userId"
+            variant="light"
+            @click="deleteRecipe(recipe.id)"
+            >Ištrinti</b-button
+          >
+          <b-button
+            class="button-container"
+            variant="light"
+            @click="showAddRecipeToMenuDialog = true"
+            >Pridėti prie savo valgiaraščio</b-button
+          >
+          <b-button
+            @click="makePrivatePublic"
+            v-if="recipe.receptoAutorius.id == userId && !recipe.arViesas"
+            variant="light"
+            >Paversti receptą viešu</b-button
+          >
+          <b-button
+            @click="makePrivatePublic"
+            v-if="recipe.receptoAutorius.id == userId && recipe.arViesas"
+            variant="light"
+            >Paversti receptą privačiu</b-button
+          >
+        </div>
+      </div>
       <md-dialog :md-active.sync="showAddRecipeToMenuDialog">
         <md-dialog-content class="md-scrollbar"
           ><AddRecipeToFoodMenuForm
@@ -62,13 +81,25 @@ import axios from "axios";
 import { mapGetters } from "vuex";
 import Vue from "vue";
 import AddRecipeToFoodMenuForm from "./AddRecipeToFoodMenuForm";
+import { eventBus } from "../../main.js";
 
 export default {
   components: {
     AddRecipeToFoodMenuForm,
   },
   data: () => ({
+    isPublic: undefined,
     showAddRecipeToMenuDialog: false,
+    recipeForUpdate: {
+      id: undefined,
+      pavadinimas: undefined,
+      nuotrauka: undefined,
+      aprasymas: undefined,
+      gaminimoLaikas: undefined,
+      porcijuSkaicius: undefined,
+      arViesas: undefined,
+      vartotojasId: undefined,
+    },
   }),
   props: ["recipe"],
   methods: {
@@ -78,11 +109,47 @@ export default {
         this.$router.go(-1);
       });
     },
+    async makePrivatePublic() {
+      this.recipeForUpdate.id = this.recipe.id;
+      this.recipeForUpdate.pavadinimas = this.recipe.pavadinimas;
+      this.recipeForUpdate.nuotrauka = this.recipe.nuotrauka;
+      this.recipeForUpdate.aprasymas = this.recipe.aprasymas;
+      this.recipeForUpdate.gaminimoLaikas = this.recipe.gaminimoLaikas;
+      this.recipeForUpdate.porcijuSkaicius = this.recipe.porcijuSkaicius;
+      this.recipeForUpdate.arViesas = !this.recipe.arViesas;
+      this.recipeForUpdate.vartotojasId = this.recipe.receptoAutorius.id;
+
+      await axios
+        .put("receptas/" + this.recipeForUpdate.id, this.recipeForUpdate)
+        .then(() => {
+          Vue.swal("", "Recepto būsena sėkmingai pakeista", "success");
+          eventBus.$emit("updateRecipeInstruction", this.recipe.id);
+        })
+        .catch((error) => {
+          if (error.response.status === 400) {
+            Vue.swal("Klaida", "Netinkami pratimo duomenys", "error");
+          } else {
+            Vue.swal(
+              "Klaida",
+              "Serverio klaida, susisiekite su administracija",
+              "error"
+            );
+          }
+        });
+    },
   },
   computed: {
     ...mapGetters({
       userId: "auth/userId",
     }),
+  },
+  created() {
+    eventBus.$on("updateRecipeInstruction", (id) => {
+      axios.get("receptas/" + id).then((response) => {
+        this.recipe = response.data;
+      });
+    });
+    this.isPublic = this.recipe.arViesas;
   },
 };
 </script>
@@ -117,5 +184,9 @@ img {
 }
 .md-dialog {
   z-index: 9;
+}
+.button-container {
+  margin-right: 5px;
+  margin-left: 2px;
 }
 </style>

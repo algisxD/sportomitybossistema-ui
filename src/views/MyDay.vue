@@ -32,11 +32,10 @@
       <div class="col-lg-5 cardBackground zoom" style="float: left; margin: 1%">
         <h3>Šiandienos valgiaraštis</h3>
         <div v-if="foodMenu.length > 0">
-          <div v-for="(menu, index) in foodMenu"
-            :key="index">
-<UsersRecipeTable v-bind:selectedFoodMenu="menu" />
+          <div v-for="(menu, index) in foodMenu" :key="index">
+            <h4>Valgiaraščio pavadinimas: {{ menu.pavadinimas }}</h4>
+            <UsersRecipeTable v-bind:selectedFoodMenu="menu" />
           </div>
-          
         </div>
         <div v-else class="today-is-empty-text">
           Šiandienos valgiaraštis tuščias

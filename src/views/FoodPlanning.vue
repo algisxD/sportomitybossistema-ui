@@ -98,7 +98,11 @@
           >
           <md-dialog :md-active.sync="showCreateRecipeDialog">
             <md-dialog-content class="md-scrollbar"
-              ><AddRecipeForm v-on:closeDialog="showCreateRecipeDialog = false"
+              ><AddRecipeForm
+                v-bind:foodMenuId="
+                  selectedFoodMenu.valgiarastisReceptas[0].valgiarastisId
+                "
+                v-on:closeDialog="showCreateRecipeDialog = false"
             /></md-dialog-content>
           </md-dialog>
           <div class="table-margins">
@@ -215,5 +219,8 @@ export default {
 .table-margins {
   margin-top: 30px;
   margin-bottom: 30px;
+}
+.md-dialog {
+  z-index: 9;
 }
 </style>

@@ -248,7 +248,6 @@ export default {
       this.form.ingredient.push({ product: "", quantity: 0 });
     },
     onFileSelected(event) {
-      console.log(event);
       this.form.image = event.target.files[0];
     },
     getValidationClass(fieldName) {
@@ -287,7 +286,6 @@ export default {
 
       this.form.ingredient.forEach((item) => {
         var id = this.getProductIdByName(item.product, this.products);
-        console.log(id);
         this.recipeData.ingridientai.push({
           kiekis: item.quantity,
           produktasId: id,
