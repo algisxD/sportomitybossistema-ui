@@ -59,7 +59,13 @@ export default {
         text: "Receptai",
         path: "/recipes",
         icon: "ion-ios-book",
-        needsAuthorization: false,
+        needsAuthorization: true,
+      },
+      {
+        text: "Mano receptai",
+        path: "/myrecipes",
+        icon: "ion-ios-book",
+        needsAuthorization: true,
       },
       {
         text: "Mitybos planavimas",

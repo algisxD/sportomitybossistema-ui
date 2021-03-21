@@ -30,7 +30,7 @@
       </div>
 
       <div class="col-lg-5 cardBackground zoom" style="float: left; margin: 1%">
-        <h3>Šiandienos valgiaraštis</h3>
+        <h3>Šiandienos mityba</h3>
         <div v-if="foodMenu.length > 0">
           <div v-for="(menu, index) in foodMenu" :key="index">
             <h4>Valgiaraščio pavadinimas: {{ menu.pavadinimas }}</h4>
