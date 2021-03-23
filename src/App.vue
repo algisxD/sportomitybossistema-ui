@@ -64,7 +64,7 @@ export default {
       {
         text: "Mano receptai",
         path: "/myrecipes",
-        icon: "ion-ios-book",
+        icon: "ion-ios-text",
         needsAuthorization: true,
       },
       {

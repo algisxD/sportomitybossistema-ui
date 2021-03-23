@@ -8,7 +8,7 @@
         style="float: left; margin: 1%; margin-left: 3%"
       >
         <h3>Jūsų valgiaraščiai</h3>
-        <b-button @click="showCreateFoodMenuDialog = true" pill variant="danger"
+        <b-button @click="showCreateFoodMenuDialog = true" variant="danger"
           >Sukurti naują valgiaraštį</b-button
         >
         <md-dialog :md-active.sync="showCreateFoodMenuDialog">
@@ -92,13 +92,20 @@
           <b-button
             @click="showCreateRecipeDialog = true"
             class="table-button"
-            pill
             variant="danger"
             >Sukurti naują receptą</b-button
           >
+          <router-link
+            :to="{
+              path: '/foodmenus/' + selectedFoodMenu.id,
+            }"
+            ><b-button variant="danger"
+              >Peržiūrėti valgiaraščio maistingumą</b-button
+            ></router-link
+          >
           <md-dialog :md-active.sync="showCreateRecipeDialog">
             <md-dialog-content class="md-scrollbar"
-              ><AddRecipeForm
+              ><AddNewRecipeToFoodMenuForm
                 v-bind:foodMenuId="
                   selectedFoodMenu.valgiarastisReceptas[0].valgiarastisId
                 "
@@ -125,7 +132,7 @@ import { mapGetters } from "vuex";
 import Vue from "vue";
 import AddFoodMenuForm from "../components/FoodMenuPage/AddFoodMenuForm";
 import EditFoodMenuForm from "../components/FoodMenuPage/EditFoodMenuForm";
-import AddRecipeForm from "../components/RecipePage/AddRecipeForm";
+import AddNewRecipeToFoodMenuForm from "../components/RecipePage/AddNewRecipeToFoodMenuForm";
 import UsersRecipeTable from "../components/RecipePage/UsersRecipeTable";
 import { eventBus } from "../main.js";
 
@@ -133,7 +140,7 @@ export default {
   components: {
     PageTitle,
     AddFoodMenuForm,
-    AddRecipeForm,
+    AddNewRecipeToFoodMenuForm,
     EditFoodMenuForm,
     UsersRecipeTable,
   },
@@ -222,5 +229,8 @@ export default {
 }
 .md-dialog {
   z-index: 9;
+}
+.table-button {
+  margin-right: 5px;
 }
 </style>

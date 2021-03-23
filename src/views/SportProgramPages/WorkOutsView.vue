@@ -11,7 +11,6 @@
         <h4>Treniruotės tipas: {{ workOut.treniruotesTipas }}</h4>
         <b-button
           class="table-button"
-          pill
           variant="danger"
           @click="showCreateDialog = true"
           >Pridėti pratimą</b-button

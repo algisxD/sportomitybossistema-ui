@@ -8,10 +8,7 @@
         style="float: left; margin: 1%; margin-left: 3%"
       >
         <h3>Jūsų sporto programos</h3>
-        <b-button
-          @click="showCreateSportProgramDialog = true"
-          pill
-          variant="danger"
+        <b-button @click="showCreateSportProgramDialog = true" variant="danger"
           >Sukurti naują sporto programą</b-button
         >
         <md-dialog :md-active.sync="showCreateSportProgramDialog">
@@ -97,7 +94,6 @@
           <b-button
             @click="showCreateWorkOutDialog = true"
             class="table-button"
-            pill
             variant="danger"
             >Sukurti naują treniruotę</b-button
           >

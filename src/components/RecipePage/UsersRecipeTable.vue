@@ -16,7 +16,7 @@
             :key="index"
           >
             <td>{{ menu.receptas.pavadinimas }}</td>
-            <td>{{ menu.receptas.gaminimoLaikas }}</td>
+            <td>{{ menu.receptas.gaminimoLaikas }} min.</td>
             <td>{{ menu.receptas.porcijuSkaicius }}</td>
             <td>
               <b-button-group>

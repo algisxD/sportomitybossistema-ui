@@ -19,7 +19,7 @@
               :to="{
                 path: '/workouts/' + workOut.id,
               }"
-              ><b-button pill variant="primary" style="margin-bottom: 15px;"
+              ><b-button variant="danger" style="margin-bottom: 15px;"
                 >Eiti į treniruotės puslapį</b-button
               ></router-link
             >
@@ -34,6 +34,14 @@
         <div v-if="foodMenu.length > 0">
           <div v-for="(menu, index) in foodMenu" :key="index">
             <h4>Valgiaraščio pavadinimas: {{ menu.pavadinimas }}</h4>
+            <router-link
+              :to="{
+                path: '/foodmenus/' + menu.id,
+              }"
+              ><b-button variant="danger" style="margin-bottom: 15px;"
+                >Peržiūrėti valgiaraščio maistingumą</b-button
+              ></router-link
+            >
             <UsersRecipeTable v-bind:selectedFoodMenu="menu" />
           </div>
         </div>

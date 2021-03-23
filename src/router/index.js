@@ -12,6 +12,7 @@ import SportPlanning from "../views/SportPlanning.vue";
 import MyDay from "../views/MyDay.vue";
 import FoodPlanning from "../views/FoodPlanning.vue";
 import MyRecipes from "../views/MyRecipes.vue";
+import FoodMenuView from "../views/FoodMenuPages/FoodMenuView";
 
 Vue.use(VueRouter);
 
@@ -50,6 +51,11 @@ const routes = [
     path: "/diet",
     name: "FoodPlanning",
     component: FoodPlanning,
+  },
+  {
+    path: "/foodmenus/:id",
+    name: "FoodMenuView",
+    component: FoodMenuView,
   },
   {
     path: "/sportplanning",

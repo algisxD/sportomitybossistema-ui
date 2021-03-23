@@ -46,6 +46,7 @@ export default {
         angliavandeniai: 0,
         riebalai: 0,
         druska: 0,
+        rusis: "product",
       },
     };
   },
@@ -76,7 +77,7 @@ export default {
       });
     },
   },
-  created() {
+  mounted() {
     axios.get("receptas/" + this.id).then((response) => {
       this.recipe = response.data;
       this.title = response.data.pavadinimas;
