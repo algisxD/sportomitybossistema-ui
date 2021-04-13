@@ -117,7 +117,7 @@
             </div>
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClassForColections(v.quantity)">
-                <label>Kiekis</label>
+                <label>Kiekis (g)</label>
                 <md-input
                   type="number"
                   name="quantity"
