@@ -35,7 +35,7 @@
             type="submit"
             class="md-primary md-raised"
             :disabled="sending"
-            >Skelbti</md-button
+            >Pridėti</md-button
           >
         </md-card-actions>
       </md-card>

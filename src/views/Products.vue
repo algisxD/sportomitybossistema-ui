@@ -8,7 +8,7 @@
         style="float: left; margin: 1%; margin-left: 3%; margin-right: 0; padding: 0px;"
       >
         <h1 style="font-size: 20px; margin-bottom: 20px;">
-          Įveskite produkto/recepto pavadinimą:
+          Įveskite produkto pavadinimą:
         </h1>
         <form style="width: 70%; margin-bottom: 50px;">
           <div class="input-group mb-3">

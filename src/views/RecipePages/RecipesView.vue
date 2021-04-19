@@ -54,25 +54,36 @@ export default {
     displaySelectedDishNutrition(item) {
       eventBus.$emit("displaySelected", item);
     },
+    fixCalculateDishNutrition(ingredients) {
+      ingredients.forEach((menu) => {
+        this.calculateDishNutrition(menu.receptas.ingridientai);
+      });
+      this.dishNutrition.kcal.toFixed(1);
+      this.dishNutrition.vanduo.toFixed(1);
+      this.dishNutrition.baltymai.toFixed(1);
+      this.dishNutrition.angliavandeniai.toFixed(1);
+      this.dishNutrition.riebalai.toFixed(1);
+      this.dishNutrition.druska.toFixed(1);
+    },
     calculateDishNutrition(ingredients) {
       this.dishNutrition.pavadinimas = this.recipe.pavadinimas;
       ingredients.forEach((element) => {
         var kiek = element.kiekis / 100;
-        this.dishNutrition.kcal = (element.produktas.kcal * kiek).toFixed(1);
-        this.dishNutrition.vanduo = parseInt(
-          (element.produktas.vanduo * kiek).toFixed(1)
+        this.dishNutrition.kcal += element.produktas.kcal * kiek;
+        this.dishNutrition.vanduo += parseInt(
+          element.produktas.vanduo * kiek
         );
-        this.dishNutrition.baltymai = parseInt(
-          (element.produktas.baltymai * kiek).toFixed(1)
+        this.dishNutrition.baltymai += parseInt(
+          element.produktas.baltymai * kiek
         );
-        this.dishNutrition.angliavandeniai = parseInt(
-          (element.produktas.angliavandeniai * kiek).toFixed(1)
+        this.dishNutrition.angliavandeniai += parseInt(
+          element.produktas.angliavandeniai * kiek
         );
-        this.dishNutrition.riebalai = parseInt(
-          (element.produktas.riebalai * kiek).toFixed(1)
+        this.dishNutrition.riebalai += parseInt(
+          element.produktas.riebalai * kiek
         );
-        this.dishNutrition.druska = parseInt(
-          (element.produktas.druska * kiek).toFixed(1)
+        this.dishNutrition.druska += parseInt(
+          element.produktas.druska * kiek
         );
       });
     },
